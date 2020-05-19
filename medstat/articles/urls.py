@@ -14,17 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from django.conf import settings  # подключаем файл настроек
-from django.conf.urls.static import static  # прописываем ссылки на статик файлы
-from django.conf.urls import url
-from medstat import views
+from django.urls import path
+from articles import views
 
+app_name = 'articles'
 urlpatterns = [
-    path('', views.home_page, name='home'),
-    path('admin/', admin.site.urls),
-    path('articles/', include('articles.urls')),
+    path('', views.main_page, name='index'),
+    path('<int:id>/', views.article_description, name='article'),
+    path('add/', views.article_add, name='article_add'),
+    path('subscribe/', views.subscribe, name='subscribe'),
+    path('service/', views.service, name='service'),
 ]
 
-if settings.DEBUG is True:
-    urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)
+
