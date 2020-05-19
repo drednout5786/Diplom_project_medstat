@@ -1,0 +1,152 @@
+{% extends "articles/base.html" %}
+
+{% block title %}Techdepartament{% endblock %}
+
+{% block content %}
+<!------------------------------------------------------------------------------------------------------------------->
+    <div class="site-section bg-light">
+      <div class="container">
+        <div class="row align-items-stretch retro-layout-2">
+          <div class="col-md-4">
+            <a href="{% url 'articles:article' id=article_1.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_1.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+              <div class="text">
+                <h2>{{article_1.article_name}}</h2>
+                <span class="date">{{article_1.article_date}}</span>
+              </div>
+            </a>
+            <a href="{% url 'articles:article' id=article_2.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_2.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+              <div class="text">
+                <h2>{{article_2.article_name}}</h2>
+                <span class="date">{{article_2.article_date}}</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4">
+            <a href="{% url 'articles:article' id=article.id %}" class="h-entry img-5 h-100 gradient" style="background: url({{ article.article_img.url }} ) no-repeat; background-size: contain;">
+              <div class="text">
+                <div class="post-categories mb-3">
+                  <span class="post-category bg-danger">Интересные истории</span>
+                </div>
+                <h2>{{article.article_name}}</h2>
+                <span class="date">{{article.article_date}}</span>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'articles:article' id=article_4.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_4.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+              <div class="text">
+                <h2>{{article_4.article_name}}</h2>
+                <span class="date">{{article_4.article_date}}</span>
+              </div>
+            </a>
+            <a href="{% url 'articles:article' id=article_5.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_5.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+              <div class="text">
+                <h2>{{article_5.article_name}}</h2>
+                <span class="date">{{article_5.article_date}}</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+<!------------------------------------------------------------------------------------------------------------------->
+    <div class="site-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-12">
+            <h2>Последние публикации</h2>
+          </div>
+        </div>
+        <div class="row">
+          {% for article in article_all.all%}
+          <div class="col-lg-4 mb-4">
+            <div class="entry2">
+              <a href="{% url 'articles:article' id=article.id %}">
+                <img src="{{article.article_img.url}}" alt="Image" class="img-fluid rounded"></a>
+              <div class="excerpt">
+
+<!--              Для вывода главного тэга в дальнейшем                -->
+<!--              <span class="post-category text-white bg-success mb-3">{{article.article_main_tag}}</span>-->
+                <span class="post-category text-white bg-success mb-3">Главный тэг статьи</span>
+
+              <h2><a href="{% url 'articles:article' id=article.id %}">{{article.article_name}}</a></h2>
+              <div class="post-meta align-items-center text-left clearfix">
+                <span>&nbsp;-&nbsp; {{article.article_date}}</span>
+              </div>
+                <p>{{article.article_text}}</p>
+                <p><a href="{% url 'articles:article' id=article.id %}">Читать полностью</a></p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+<!--        <div class="row text-center pt-5 border-top">-->
+<!--          <div class="col-md-12">-->
+<!--            <div class="custom-pagination">-->
+<!--              <span>1</span>-->
+<!--              <a href="#">2</a>-->
+<!--              <a href="#">3</a>-->
+<!--              <a href="#">4</a>-->
+<!--              <span>...</span>-->
+<!--              <a href="#">15</a>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+      </div>
+    </div>
+<!------------------------------------------------------------------------------------------------------------------->
+    <div class="site-section bg-light">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-12">
+            <h2>Вам может понравиться</h2>
+          </div>
+        </div>
+        <div class="row align-items-stretch retro-layout">
+
+          <div class="col-md-5 order-md-2">
+
+            <a href="{% url 'articles:article' id=article_11.id %}" class="hentry img-1 h-100 gradient" style="background: url({{ article_11.article_img.url }} ) no-repeat; background-size: contain;">
+              <span class="post-category text-white bg-danger">Рецензия статистика</span>
+              <div class="text">
+                <h2>{{article_11.article_name}}</h2>
+                <span>{{article_11.article_date}}</span>
+              </div>
+            </a>
+
+          </div>
+
+          <div class="col-md-7">
+            <a href="{% url 'articles:article' id=article_12.id %}" class="hentry img-2 v-height mb30 gradient" style="background: url({{ article_12.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+              <span class="post-category text-white bg-success">Искусственный интеллект в медицине</span>
+              <div class="text text-sm">
+                <h2>{{article_12.article_name}}</h2>
+                <span>{{article_12.article_date}}</span>
+              </div>
+            </a>
+
+            <div class="two-col d-block d-md-flex">
+              <a href="{% url 'articles:article' id=article_13.id %}" class="hentry v-height img-2 gradient" style="background: url({{ article_13.article_img.url }} ) no-repeat; background-size: contain;">
+                <span class="post-category text-white bg-primary">Доказательная медицина</span>
+                <div class="text text-sm">
+                  <h2>{{article_13.article_name}}</h2>
+                  <span>{{article_13.article_date}}</span>
+                </div>
+              </a>
+              <a href="{% url 'articles:article' id=article_14.id %}" class="hentry v-height img-2 ml-auto gradient" style="background: url({{ article_14.article_img.url }} ) no-repeat; background-size: contain;">
+                <span class="post-category text-white bg-warning">Консультант по статистике</span>
+                <div class="text text-sm">
+                  <h2>{{article_14.article_name}}</h2>
+                  <span>{{article_14.article_date}}</span>
+                </div>
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+<!------------------------------------------------------------------------------------------------------------------->
+{% endblock %}

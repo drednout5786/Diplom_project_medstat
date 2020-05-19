@@ -1,0 +1,84 @@
+{% extends "articles/base.html" %}
+
+{% block title %}{{article.article_name}}{% endblock %}
+{% block content %}
+
+<div class="site-cover site-cover-sm same-height overlay single-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="post-entry text-center">
+                    <span class="post-category text-white bg-primary mb-3">Услуга</span>
+                    <h2 class="mb-4"><a href="#">Заказать статобработку</a></h2>
+                        <div class="post-meta align-items-center text-center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------------------------------------------------------------------------------------------------->
+    <div class="site-section bg-lightx">
+      <div class="container">
+          <div class="text">
+              <p>Статобработка включает в себя полный пакет </p>
+              <p>Статистическое исследование включает в себя три этапа или стадии: - cтатистическое наблюдение;
+                  - первичная обработка, сводка и группировка результатов наблюдения; - анализ сводных данных с помощью
+                  обобщающих показателей и осо-бых приемов (методов).</p>
+              <p>Бла-бла-бла </p>
+              <p>Раздел в разработке. </p>
+          </div>
+
+      </div>
+    </div>
+<!------------------------------------------------------------------------------------------------------------------->
+
+<!------------------------------------------------------------------------------------------------------------------->
+<div class="site-section bg-light">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-12">
+            <h2>Вам может понравиться</h2>
+          </div>
+          </div>
+        <div class="row align-items-stretch retro-layout">
+            <div class="col-md-5 order-md-2">
+                <a href="{% url 'articles:article' id=article_11.id %}" class="hentry img-1 h-100 gradient" style="background: url({{ article_11.article_img.url }} ) no-repeat; background-size: contain;">
+                  <span class="post-category text-white bg-danger">Рецензия статистика</span>
+                  <div class="text">
+                    <h2>{{article_11.article_name}}</h2>
+                    <span>{{article_11.article_date}}</span>
+                  </div>
+                </a>
+            </div>
+
+          <div class="col-md-7">
+            <a href="{% url 'articles:article' id=article_12.id %}" class="hentry img-2 v-height mb30 gradient" style="background: url({{ article_12.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+              <span class="post-category text-white bg-success">Искусственный интеллект в медицине</span>
+              <div class="text text-sm">
+                <h2>{{article_12.article_name}}</h2>
+                <span>{{article_12.article_date}}</span>
+              </div>
+            </a>
+
+            <div class="two-col d-block d-md-flex">
+              <a href="{% url 'articles:article' id=article_13.id %}" class="hentry v-height img-2 gradient" style="background: url({{ article_13.article_img.url }} ) no-repeat; background-size: contain;">
+                <span class="post-category text-white bg-primary">Доказательная медицина</span>
+                <div class="text text-sm">
+                  <h2>{{article_13.article_name}}</h2>
+                  <span>{{article_13.article_date}}</span>
+                </div>
+              </a>
+              <a href="{% url 'articles:article' id=article_14.id %}" class="hentry v-height img-2 ml-auto gradient" style="background: url({{ article_14.article_img.url }} ) no-repeat; background-size: contain;">
+                <span class="post-category text-white bg-warning">Консультант по статистике</span>
+                <div class="text text-sm">
+                  <h2>{{article_14.article_name}}</h2>
+                  <span>{{article_14.article_date}}</span>
+                </div>
+              </a>
+            </div>
+        </div>
+      </div>
+      </div>
+</div>
+
+{% endblock %}
