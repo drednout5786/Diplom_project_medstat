@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.http import HttpResponse
 from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Article, Tag, Subscriber
 from .forms import ArticleForm
 from .forms import EmailForm
 from datetime import datetime
 from django.core.files.images import ImageFile
+
 
 # Create your views (представление) here.
 
@@ -15,7 +17,8 @@ def main_page(request):
 
 def article_description(request, id):
     art_one = get_object_or_404(Article, id=id)
-    tags_all = Article.objects.get(id=id).article_tag.all()
+    tags_article_all = Article.objects.get(id=id).article_tag.all()
+    tags_all = Tag.objects.all()
     article_11 = get_object_or_404(Article, id=6)
     article_12 = get_object_or_404(Article, id=10)
     article_13 = get_object_or_404(Article, id=9)
@@ -23,13 +26,26 @@ def article_description(request, id):
 
     context = {
         'article': art_one,
-        'tags': tags_all,
+        'tags_article_all': tags_article_all,
+        'tags_all': tags_all,
         'article_11': article_11,
         'article_12': article_12,
         'article_13': article_13,
         'article_14': article_14,
     }
     return render(request, 'articles/single.html', context)
+
+def tag_articles(request, id):
+    tag_one = get_object_or_404(Tag, id=id)
+    # получаем все статьи, которые имеют тэг tag_one
+    articles_all = Article.objects.filter(article_tag__tag_name=tag_one)
+    tags_all = Tag.objects.all()
+    context = {
+        'tag': tag_one,
+        'articles_all': articles_all,
+        'tags_all': tags_all,
+    }
+    return render(request, 'articles/tag_articles.html', context)
 
 def article_add(request):
     if request.method == 'GET':  # Когда мы открываем шаблон
@@ -38,7 +54,17 @@ def article_add(request):
     else:
         form = ArticleForm(request.POST, files=request.FILES) #  POST - После отправки данных из формы
         if form.is_valid():
+            # обработка данных
+            # Первый способ создания формы
+            # name = form.cleaned_data['name']
+            # text = form.cleaned_data['text']
+            # tags = form.cleaned_data['tags']
+            # print(f'{name}, {text}, {tags}')
+            # article_object = Article(article_name=name, article_text=text, article_date=datetime.now(), article_img=ImageFile(open("media/articles/happy_lion.jpg", "rb")))
+            # article_object.save()
+            # Второй способ создания формы
             form.save()
+            # Переход по адресу index
             return HttpResponseRedirect(reverse('articles:index'))
         else:
             return render(request, 'articles/article_add.html', {'form': form})
@@ -50,8 +76,16 @@ def subscribe(request):
     else:
         form = EmailForm(request.POST)
         if form.is_valid():
-              form.save()
-              return HttpResponseRedirect(reverse('articles:index'))
+            # обработка данных
+            # Первый способ создания формы
+            # name = form.cleaned_data['subscribe_name']
+            # email = form.cleaned_data['subscribe_email']
+            # print(f'{name}, {email}')
+            # subscriber_object = Subscriber(subscribe_name=name, subscribe_email=email, subscribe_date=datetime.now())
+            # subscriber_object.save()
+            # Второй способ создания формы
+            form.save()
+            return HttpResponseRedirect(reverse('articles:index'))
         else:
             return render(request, 'articles/subscribe.html', {'form': form})
 
@@ -67,3 +101,51 @@ def service(request):
         'article_14': article_14,
     }
     return render(request, 'articles/service.html', context)
+
+
+class ArticleListView(ListView):
+    model = Article
+    template_name = 'articles/article_list.html'
+    context_object_name = 'tags'
+
+class ArticleUpdateView(UpdateView):
+    model = Article
+    fields = '__all__'
+    template_name = 'articles/article_update.html'
+    success_url = reverse_lazy('articles:index')
+
+
+class ArticleDeleteView(DeleteView):
+    template_name = 'articles/article_delete.html'
+    model = Article
+    success_url = reverse_lazy('articles:index')
+
+class TagListView(ListView):
+    model = Tag
+    template_name = 'articles/tag_list.html'
+    context_object_name = 'tags'
+
+    #def get_queryset(self):
+    # можно наложить условия на объекты
+        #return Tag.objects.all()
+
+class TagDetailView(DetailView):
+    model = Tag
+    template_name = 'articles/tag_one.html'
+
+class TagUpdateView(UpdateView):
+    model = Tag
+    fields = '__all__'
+    template_name = 'articles/tag_update.html'
+    success_url = reverse_lazy('articles:tag_list')
+
+class TagCreateView(CreateView):
+    model = Tag
+    fields = '__all__'
+    template_name = 'articles/tag_create.html'
+    success_url = reverse_lazy('articles:tag_list')
+
+class TagDeleteView(DeleteView):
+    template_name = 'articles/tag_delete.html'
+    model = Tag
+    success_url = reverse_lazy('articles:tag_list')

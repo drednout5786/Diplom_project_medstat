@@ -1,0 +1,26 @@
+{% extends "articles/base.html" %}
+
+{% block title %}Удаление тэга{% endblock %}
+
+{% block content %}
+    <div class="site-section bg-light">
+      <div class="container">
+          <div class="row mb-5">
+              <div class="col-12">
+                  <h2>Удаление тэга:</h2>
+              </div>
+          </div>
+        <div class="row align-items-stretch retro-layout-2">
+            <div class="text-center">
+                <h5>{{object.tag_name}}</h5>
+                <p></p>Вы уверены, что хотите удалить данный тэг?<p></p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-danger" type="submit">Да</button>
+                    <p></p>
+                </form>
+            </div>
+          </div>
+        </div>
+    </div>
+{% endblock %}

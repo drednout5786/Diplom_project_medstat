@@ -71,18 +71,15 @@
                 <li> <a href="{% url 'home' %}">На главную</a></li>
                 <li><a href="{% url 'articles:index' %}">Статьи</a></li>
                 <li><a href="{% url 'articles:service' %}">Услуги</a></li>
-                <li><a href="{% url 'articles:article_add' %}">Добавить статью</a></li>
+                <li><a href="{% url 'articles:tag_list' %}">Все тэги</a></li>
                 <li><a href="#">Поиск по ключевым словам</a></li>
                 <li class="d-none d-lg-inline-block"><a href="#" class="js-search-toggle"><span class="icon-search"></span></a></li>
               </ul>
             </nav>
             <a href="#" class="site-menu-toggle js-menu-toggle text-black d-inline-block d-lg-none"><span class="icon-menu h3"></span></a></div>
           </div>
-
       </div>
     </header>
-
-
 {% block content %} {% endblock %}
 <!---------------------------Футер---------------------------------------------------------------------------------->
     <div class="site-footer">
@@ -106,10 +103,10 @@
             </ul>
             <h3 class="footer-heading mb-4">Основные темы:</h3>
             <ul class="list-unstyled float-left">
-              <li><a href="#">Доказательная медицина</a></li>
-              <li><a href="#">Рецензия статистика</a></li>
-              <li><a href="#">Методы</a></li>
-              <li><a href="#">Математики улыбаются</a></li>
+              <li><a href="{% url 'articles:tag_articles' id=13 %}">Доказательная медицина</a></li>
+              <li><a href="{% url 'articles:tag_articles' id=1 %}">Рецензия статистика</a></li>
+              <li><a href="{% url 'articles:tag_articles' id=6 %}">Методы</a></li>
+              <li><a href="{% url 'articles:tag_articles' id=10 %}">Математики улыбаются</a></li>
             </ul>
           </div>
 

@@ -22,8 +22,16 @@ urlpatterns = [
     path('', views.main_page, name='index'),
     path('<int:id>/', views.article_description, name='article'),
     path('add/', views.article_add, name='article_add'),
+    path('article-update/<int:pk>/', views.ArticleUpdateView.as_view(), name='article_update'),
+    path('article-delete/<int:pk>/', views.ArticleDeleteView.as_view(), name='article_delete'),
     path('subscribe/', views.subscribe, name='subscribe'),
     path('service/', views.service, name='service'),
+    path('tag_articles/<int:id>/', views.tag_articles, name='tag_articles'),
+    path('tags/', views.TagListView.as_view(), name='tag_list'),
+    path('tag-one/<int:pk>/', views.TagDetailView.as_view(), name='tag_one'),
+    path('tag-update/<int:pk>/', views.TagUpdateView.as_view(), name='tag_update'),
+    path('tag-create/', views.TagCreateView.as_view(), name='tag_create'),
+    path('tag-delete/<int:pk>/', views.TagDeleteView.as_view(), name='tag_delete'),
 ]
 
 

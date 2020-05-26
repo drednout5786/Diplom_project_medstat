@@ -5,7 +5,11 @@ import random
 
 # Create your views (представление) here.
 
+# https://pastebin.com/fAU6qmgA
 def home_page(request):
+    # random_idx = random.randint(1, Article.objects.count())
+    # art_random = get_object_or_404(Article, id=random_idx)
+
     article_1 = get_object_or_404(Article, id=6)
     article_2 = get_object_or_404(Article, id=2)
     article_3 = get_object_or_404(Article, id=8)
@@ -16,6 +20,7 @@ def home_page(request):
     article_12 = get_object_or_404(Article, id=10)
     article_13 = get_object_or_404(Article, id=9)
     article_14 = get_object_or_404(Article, id=12)
+
     context = {
         'article_1': article_1,
         'article_2': article_2,
@@ -29,7 +34,6 @@ def home_page(request):
         'article_14': article_14,
     }
     return render(request, 'articles/index.html', context)
-
 
 
 

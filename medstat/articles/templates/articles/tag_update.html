@@ -1,0 +1,22 @@
+{% extends "articles/base.html" %}
+
+{% block title %}Tag update{% endblock %}
+
+{% block content %}
+    <div class="site-section bg-light">
+      <div class="container">
+          <div class="row mb-5">
+              <div class="col-12">
+                  <h2>Коррекция тэга:</h2>
+              </div>
+          </div>
+        <div class="row align-items-stretch retro-layout-2">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+      </div>
+    </div>
+{% endblock %}

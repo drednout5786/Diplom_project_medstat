@@ -1,0 +1,48 @@
+{% extends "articles/base.html" %}
+
+{% block title %}{{tag}}{% endblock %}
+
+{% block content %}
+    <div class="py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <span>Раздел: Все тэги</span>
+            <h3>Статьи по тэгу: {{tag}}</h3>
+            <p>Все статьи по выбранному тэгу собраны здесь!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+<!------------------------------------------------------------------------------------------------------------------->
+    <div class="site-section bg-white">
+      <div class="container">
+        <div class="row">
+            {% for article in articles_all.all%}
+              <div class="col-lg-4 mb-4">
+                <div class="entry2">
+                  <a href="{% url 'articles:article' id=article.id %}">
+                    <img src="{{article.article_img.url}}" alt="Image" class="img-fluid rounded"></a>
+                  <div class="excerpt">
+                    <h2><a href="{% url 'articles:article' id=article.id %}">{{article.article_name}}</a></h2>
+                    <div class="post-meta align-items-center text-left clearfix">
+                      <span>&nbsp;-&nbsp; {{article.article_date}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+<!------------------------------------------------------------------------------------------------------------------->
+            <div class="sidebar-box">
+                <h3 class="heading">Все тэги:</h3>
+                <ul class="tags">
+                    {% for tag_ in tags_all.all%}
+                    <li><a href="{% url 'articles:tag_articles' id=tag_.id %}">{{tag_}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+<!------------------------------------------------------------------------------------------------------------------->
+        </div>
+      </div>
+    </div>
+{% endblock %}
