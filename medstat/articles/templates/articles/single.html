@@ -32,7 +32,7 @@
                 {{article.article_text}}
             </div>
             <div class="pt-5">
-              <p>Categories:
+              <p>Тэги:
                 {% for tag in tags_article_all.all%}
                 <a href="{% url 'articles:tag_articles' id=tag.id %}"><span class="post-category text-white bg-primary mb-3">{{tag}}</span></a>
                 {% endfor %}
@@ -57,6 +57,7 @@
       </div>
     </section>
 <!------------------------------------------------------------------------------------------------------------------->
+    {% if user.is_superuser %}
     <div class="site-section bg-light">
       <div class="container">
           <div class="row mb-5">
@@ -81,6 +82,7 @@
           <div class="text"></div>
       </div>
     </div>
+    {% endif %}
 <!------------------------------------------------------------------------------------------------------------------->
 <div class="site-section bg-light">
       <div class="container">
@@ -118,7 +120,7 @@
                 </div>
               </a>
               <a href="{% url 'articles:article' id=article_14.id %}" class="hentry v-height img-2 ml-auto gradient" style="background: url({{ article_14.article_img.url }} ) no-repeat; background-size: contain;">
-                <span class="post-category text-white bg-warning">Консультант по статистике</span>
+                <span class="post-category text-white bg-warning">Визуализация</span>
                 <div class="text text-sm">
                   <h2>{{article_14.article_name}}</h2>
                   <span>{{article_14.article_date}}</span>

@@ -62,7 +62,9 @@
           </div>
 
           <div class="col-4 site-logo">
-            <a href="{% url 'home' %}" class="text-black h2 mb-0">Techdepartament</a>
+            <a href="{% url 'home' %}" class="text-black h2 mb-0">Медстатистика</a>
+            <!-- логотип будет позже  https://itchief.ru/lessons/bootstrap-3/38-bootstrap-3-navigation-menu-->
+              <a class="navbar-brand" href="{% url 'home' %}"><img src="navbar-brand.svg" height="36" alt="Image"></a>
           </div>
 
           <div class="col-8 text-right">
@@ -70,10 +72,39 @@
               <ul class="site-menu js-clone-nav mr-auto d-none d-sm-block">
                 <li> <a href="{% url 'home' %}">На главную</a></li>
                 <li><a href="{% url 'articles:index' %}">Статьи</a></li>
-                <li><a href="{% url 'articles:service' %}">Услуги</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                      aria-expanded="false">Услуги<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url 'articles:service' %}">Статобработка</a></li>
+                      <li><a href="#">Консультация</a></li>
+                      <li><a href="#">Рецензия</a></li>
+                      <li><a href="#">Задать вопрос</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                      aria-expanded="false">Поиск по ключевым темам<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url 'articles:tag_articles' id=1 %}">Доказательная медицина</a></li>
+                      <li><a href="{% url 'articles:tag_articles' id=4 %}">Статистика для медиков</a></li>
+                      <li><a href="{% url 'articles:tag_articles' id=2 %}">Рецензия статистика</a></li>
+                      <li><a href="{% url 'articles:tag_articles' id=9 %}">Консультант по статистике</a></li>
+                      <li><a href="{% url 'articles:tag_articles' id=7 %}">Методы</a></li>
+                      <li><a href="{% url 'articles:tag_articles' id=8 %}">Искусственный интеллект</a></li>
+                      <li><a href="{% url 'articles:tag_articles' id=10 %}">Визуализация</a></li>
+                    </ul>
+                </li>
+                {% if user.is_superuser %}
                 <li><a href="{% url 'articles:tag_list' %}">Все тэги</a></li>
-                <li><a href="#">Поиск по ключевым словам</a></li>
-                <li class="d-none d-lg-inline-block"><a href="#" class="js-search-toggle"><span class="icon-search"></span></a></li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <p class="navbar-text">Вы вошли как {{user.username}}!</p>
+                    <li><a href="{% url 'users:logout' %}">Выход</a></li>
+                {% else %}
+                    <li><a href="{% url 'users:login' %}">Войти</a></li>
+                    <li><a href="{% url 'users:register' %}">Регистрация</a></li>
+                {% endif %}
               </ul>
             </nav>
             <a href="#" class="site-menu-toggle js-menu-toggle text-black d-inline-block d-lg-none"><span class="icon-menu h3"></span></a></div>
@@ -88,25 +119,28 @@
           <div class="col-md-4">
             <h3 class="footer-heading mb-4">О компании</h3>
             <p>ООО Техдепартамент, статистика для медицины</p>
+            <p>Компания выполняет работы по статистическому анализу экспериментальных данных уже более 20 лет.</p>
+            <p>Имеем обширный опыт как в помощи написания диссертации, так и рецензирования/написания научных статей.</p>
             <p>Мы, профессионалы математики и статистики, помогаем практикующим врачам, аспирантам/докторантам, пишущим
-              диссертацию, и желающим правильно оформить расчеты и описание к ним.</p>
-            <p>Цель портала - собрать советы по написания кандидатской/докторской диссертации или научной статьи в
-              ВАКовских журнал по медицине. В части статистических расчетов и правильного оформления проведенных исследований.</p>
+              диссертацию, и желающим правильно посчитать, оформить расчеты и сделать точное описание и интерпретацию к ним.</p>
+            <p>Цель портала - помочь и дать советы по написанию кандидатской/докторской диссертации или научной статьи в
+              ВАКовский журнал по медицине, в части статистических расчетов и правильного оформления проведенных исследований.</p>
           </div>
           <div class="col-md-3 ml-auto">
             <!-- <h3 class="footer-heading mb-4">Navigation</h3> -->
             <ul class="list-unstyled float-left mr-5">
-              <li><a href="#">О компании</a></li>
               <li><a href="{% url 'articles:service' %}">Услуги</a></li>
-              <li><a href="#">Условия</a></li>
+              <li><a href="{% url 'articles:request_service' %}">Заказать статобработку</a></li>
               <li><a href="{% url 'articles:subscribe' %}">Подписка на новости</a></li>
+              <li><a href="#">Отзывы</a></li>
+              <li><a href="#">Карта сайта</a></li>
             </ul>
             <h3 class="footer-heading mb-4">Основные темы:</h3>
             <ul class="list-unstyled float-left">
-              <li><a href="{% url 'articles:tag_articles' id=13 %}">Доказательная медицина</a></li>
-              <li><a href="{% url 'articles:tag_articles' id=1 %}">Рецензия статистика</a></li>
-              <li><a href="{% url 'articles:tag_articles' id=6 %}">Методы</a></li>
-              <li><a href="{% url 'articles:tag_articles' id=10 %}">Математики улыбаются</a></li>
+              <li><a href="{% url 'articles:tag_articles' id=1 %}">Доказательная медицина</a></li>
+              <li><a href="{% url 'articles:tag_articles' id=2 %}">Рецензия статистика</a></li>
+              <li><a href="{% url 'articles:tag_articles' id=7 %}">Методы</a></li>
+              <li><a href="{% url 'articles:tag_articles' id=11 %}">Математики улыбаются</a></li>
             </ul>
           </div>
 
@@ -135,10 +169,6 @@
         </div>
       </div>
     </div>
-
   </div>
-
-
-
   </body>
 </html>

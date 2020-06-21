@@ -3,6 +3,18 @@
 {% block title %}{{article.article_name}}{% endblock %}
 <!------------------------------------------------------------------------------------------------------------------->
 {% block content %}
+
+<div class="py-5 bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+          <span>Раздел: Работа со статьями</span>
+          <h3>Добавление статьи</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="site-section bg-white">
 <!--    https://html5book.ru/css-background/-->
     <div class="container">
@@ -19,7 +31,7 @@
                     {% endfor %}
                     <p>{{field}}</p>
                     {% endfor %}
-                    <button type="submit" >Добавить статью</button>
+                    <button type="submit" class="btn btn-primary">Сохранить статью</button>
                 </form>
             </div>
         </div>
