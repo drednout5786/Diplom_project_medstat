@@ -75,6 +75,12 @@
                 <p>Если у Вас остались вопросы, то можете заказать консультацию или задать вопрос.</p>
                 <a href="#"><span class="post-category text-white bg-success mb-3">Заказать консультацию</span></a>
                 <a href="#"><span class="post-category text-white bg-success mb-3">Задать вопрос</span></a>
+                <a href="#"><span class="post-category text-white bg-success mb-3">Заказать рецензию</span></a>
+                {% if user.is_authenticated %}
+                  <a href="{% url 'users:subscribe' pk=user.pk %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+                {% else %}
+                  <a href="{% url 'users:register' %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+                {% endif %}
               </div>
           </div>
       </div>

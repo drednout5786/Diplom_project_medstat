@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'articles.apps.ArticlesConfig',
     'users.apps.UsersConfig',
+    # 'users',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -129,7 +130,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Переопределение класса пользователя
-AUTH_USER_MODEL='users.ArticlesUser'
+AUTH_USER_MODEL = 'users.ArticlesUser'
 
 # Редиректы при регистрации/выходе
 LOGIN_REDIRECT_URL = '/'

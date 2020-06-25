@@ -80,6 +80,11 @@
                       <li><a href="#">Консультация</a></li>
                       <li><a href="#">Рецензия</a></li>
                       <li><a href="#">Задать вопрос</a></li>
+                      {% if user.is_authenticated %}
+                      <li><a href="{% url 'users:subscribe' pk=user.pk %}">Подписка на новости</a></li>
+                      {% else %}
+                      <li><a href="{% url 'users:register' %}">Подписка на новости</a></li>
+                      {% endif %}
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -99,10 +104,10 @@
                 <li><a href="{% url 'articles:tag_list' %}">Все тэги</a></li>
                 {% endif %}
                 {% if user.is_authenticated %}
-                    <p class="navbar-text">Вы вошли как {{user.username}}!</p>
+                    <p class="navbar-text">Вы вошли как {{user.username}}</p> |
                     <li><a href="{% url 'users:logout' %}">Выход</a></li>
                 {% else %}
-                    <li><a href="{% url 'users:login' %}">Войти</a></li>
+                    <li><a href="{% url 'users:login' %}">Войти</a></li> |
                     <li><a href="{% url 'users:register' %}">Регистрация</a></li>
                 {% endif %}
               </ul>
@@ -131,7 +136,11 @@
             <ul class="list-unstyled float-left mr-5">
               <li><a href="{% url 'articles:service' %}">Услуги</a></li>
               <li><a href="{% url 'articles:request_service' %}">Заказать статобработку</a></li>
-              <li><a href="{% url 'articles:subscribe' %}">Подписка на новости</a></li>
+              {% if user.is_authenticated %}
+              <li><a href="{% url 'users:subscribe' pk=user.pk %}">Подписка на новости</a></li>
+              {% else %}
+              <li><a href="{% url 'users:register' %}">Подписка на новости</a></li>
+              {% endif %}
               <li><a href="#">Отзывы</a></li>
               <li><a href="#">Карта сайта</a></li>
             </ul>

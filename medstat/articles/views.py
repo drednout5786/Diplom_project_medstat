@@ -2,9 +2,9 @@ from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.http import HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Article, Tag, Subscriber
+from .models import Article, Tag, Subscriber_request
 from .forms import ArticleForm
-from .forms import EmailForm
+# from .forms import EmailForm
 from .forms import RequestForm
 from datetime import datetime
 from django.core.files.images import ImageFile
@@ -75,35 +75,6 @@ def article_add(request):
         else:
             return render(request, 'articles/article_add.html', {'form': form})
 
-@login_required
-def subscribe(request):
-    if request.method == 'GET':  # Когда мы открываем шаблон
-        form = EmailForm()
-        return render(request, 'articles/subscribe.html', {'form': form})
-    else:
-        form = EmailForm(request.POST)
-        if form.is_valid():
-            # temp = form.save(commit=False)
-            # temp.subscribe_name = request.username
-            # temp.subscribe_email = request.email
-            # temp.save()
-            # обработка данных
-            # Первый способ создания формы
-            # name = form.cleaned_data['subscribe_name']
-            # email = form.cleaned_data['subscribe_email']
-            # print(f'{name}, {email}')
-            # subscriber_object = Subscriber(subscribe_name=name, subscribe_email=email, subscribe_date=datetime.now())
-            # subscriber_object.save()
-            # Второй способ создания формы
-            form.save()
-            return HttpResponseRedirect(reverse('articles:success_subscribe'))
-        else:
-            return render(request, 'articles/subscribe.html', {'form': form})
-
-@login_required
-def success_subscribe(request):
-        return render(request, 'articles/success_subscribe.html')
-
 def service(request):
     article_11 = get_object_or_404(Article, id=14)
     article_12 = get_object_or_404(Article, id=20)
@@ -150,12 +121,11 @@ class ArticleDeleteView(DeleteView):
     model = Article
     success_url = reverse_lazy('articles:index')
 
-
 class PermissionMixin:
     def test_func(self):
         return self.request.user.is_superuser
 
-    def handle_no_permission(self):
+    def handle_no_permission(self): # перенаправляет пользователя на login_url
         return HttpResponseRedirect(reverse('users:login'))
 
 class TagListView(LoginRequiredMixin, ListView):

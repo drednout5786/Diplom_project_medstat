@@ -4,6 +4,7 @@ from django.db import models
 from datetime import datetime
 import os
 from django.conf import settings
+from users.models import ArticlesUser #импортируем из users
 # from django.contrib.auth.models import User
 # from django.db.models.signals import post_save
 # from django.dispatch import receiver
@@ -32,15 +33,6 @@ class Article(models.Model):
         # с перечислением тэгов
         # return "%s (%s)" % (self.article_name, ", ".join(Tag.tag_name for Tag in self.article_tag.all()))
 
-class Subscriber(models.Model):
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
-    subscribe_name = models.CharField('Ваше имя', max_length=100, null=True)
-    subscribe_email = models.CharField('Ваш email', max_length=100)
-    subscribe_date = models.DateTimeField('Дата подписки', default=datetime.now())
-
-    def __str__(self):
-        return f'{self.subscribe_name}, email: {self.subscribe_email}'
-
 # @receiver(post_save, sender=User)
 # def create_user_profile(sender, instance, created, **kwargs):
 #     if created:
@@ -50,11 +42,28 @@ class Subscriber(models.Model):
 # def save_user_profile(sender, instance, **kwargs):
 #     instance.profile.save()
 
+#  https://stackoverflow.com/questions/26312219/operationalerror-no-such-column-django
 class Subscriber_request(models.Model):
-    subscribe_request_name = models.CharField('Ваше имя', max_length=100)
-    subscribe_request_email = models.CharField('Ваш email', max_length=100)
+    STATPROCESSING = 'SP'
+    CONSULTATION = 'CO'
+    QUESTION = 'QS'
+    REVIEW = 'RV'
+    REQUEST_TYPE_CHOICES = [
+        (STATPROCESSING, 'Статобработка'),
+        (CONSULTATION, 'Консультация'),
+        (QUESTION, 'Вопрос'),
+        (REVIEW, 'Рецензия'),
+    ]
+    subscribe_request_name = models.ForeignKey(ArticlesUser, on_delete=models.CASCADE) #связываем таблицы
+        # settings.AUTH_USER_MODEL,
+        # on_delete=models.CASCADE,
+        # related_name='usernames',)
+    subscribe_request_type = models.CharField('Тип запроса', max_length=2, choices=REQUEST_TYPE_CHOICES, default=STATPROCESSING, blank=False)
+    subscribe_request_subject = models.CharField('Тема обращения', max_length=200, blank=False, default='')
+    subscribe_request_text = models.TextField('Текст обращения', max_length=10000, blank=False, default='')
     subscribe_request_date = models.DateTimeField('Дата обращения', default=datetime.now())
-    subscribe_request_text = models.TextField('Текст обращения', max_length=10000)
 
     def __str__(self):
-        return f'{self.subscribe_request_name}, email: {self.subscribe_request_email}, обращение: {self.subscribe_request_text}'
+        return f'{self.subscribe_request_name}, тип запроса: {self.subscribe_request_type}, ' \
+               f'дата образения: {self.subscribe_request_date}, тема обращения: {self.subscribe_request_subject}, ' \
+               f'обращение: {self.subscribe_request_text}'
