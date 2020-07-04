@@ -4,7 +4,6 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Article, Tag, Subscriber_request
 from .forms import ArticleForm
-# from .forms import EmailForm
 from .forms import RequestForm
 from datetime import datetime
 from django.core.files.images import ImageFile
@@ -96,7 +95,11 @@ def request_service(request):
     else:
         form = RequestForm(request.POST)
         if form.is_valid():
-            form.save()
+            temp = form.save(commit=False)
+            temp.subscribe_request_name = request.user
+            temp.subscribe_request_type = 'SP'
+            temp.save()
+            # form.save()
             return HttpResponseRedirect(reverse('articles:success_request'))
         else:
             return render(request, 'articles/request_service.html', {'form': form})

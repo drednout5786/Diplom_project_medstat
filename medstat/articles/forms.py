@@ -7,15 +7,16 @@ class ArticleForm(forms.ModelForm):
     article_tag = forms.ModelMultipleChoiceField(label='Тэги', queryset=Tag.objects.all(), widget=forms.CheckboxSelectMultiple())
     class Meta:
         model = Article  # Привязываем форму с конкретной моделью.
-        fields = '__all__'  # Все ли поля отображать
+        fields = '__all__'  # Все поля отображать
         # fields = ('article_name', 'article_text') # Какие поля отображать
         # exclude = ('tags')  # Какие поля исключить.
 
 class RequestForm(forms.ModelForm):
     class Meta:
         model = Subscriber_request  # Привязываем форму с конкретной моделью.
-        fields = '__all__'
-        #fields = ('subscribe_request_name', 'subscribe_request_text')
+        # fields = '__all__'
+        fields = ('subscribe_request_subject', 'subscribe_request_text')
+
 
 # class ArticleForm(forms.Form):
 #     name = forms.CharField(label='Название статьи', max_length=1000)

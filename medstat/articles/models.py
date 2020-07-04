@@ -55,9 +55,6 @@ class Subscriber_request(models.Model):
         (REVIEW, 'Рецензия'),
     ]
     subscribe_request_name = models.ForeignKey(ArticlesUser, on_delete=models.CASCADE) #связываем таблицы
-        # settings.AUTH_USER_MODEL,
-        # on_delete=models.CASCADE,
-        # related_name='usernames',)
     subscribe_request_type = models.CharField('Тип запроса', max_length=2, choices=REQUEST_TYPE_CHOICES, default=STATPROCESSING, blank=False)
     subscribe_request_subject = models.CharField('Тема обращения', max_length=200, blank=False, default='')
     subscribe_request_text = models.TextField('Текст обращения', max_length=10000, blank=False, default='')
@@ -65,5 +62,5 @@ class Subscriber_request(models.Model):
 
     def __str__(self):
         return f'{self.subscribe_request_name}, тип запроса: {self.subscribe_request_type}, ' \
-               f'дата образения: {self.subscribe_request_date}, тема обращения: {self.subscribe_request_subject}, ' \
+               f'дата обращения: {self.subscribe_request_date}, тема обращения: {self.subscribe_request_subject}, ' \
                f'обращение: {self.subscribe_request_text}'

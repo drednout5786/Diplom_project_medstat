@@ -16,7 +16,7 @@
       <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12 col-lg-10">
-                <p>Welcome, {{ user.username }}. Thanks for logging in.</p>
+                <p>Вы вошли как {{ user.username }}.</p>
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% for field in form %}
