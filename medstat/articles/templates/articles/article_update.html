@@ -20,7 +20,8 @@
           <div class="row align-items-stretch retro-layout-2">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.as_p }}
+                <table>{{ form.as_table }}</table>
+<!--                {{ form.as_p }}-->
                 <button type="submit" class="btn btn-primary">Сохранить</button>
             </form>
           </div>

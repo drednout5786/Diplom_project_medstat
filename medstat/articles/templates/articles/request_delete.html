@@ -1,0 +1,35 @@
+{% extends "articles/base.html" %}
+
+{% block title %}Удаление запроса{% endblock %}
+
+{% block content %}
+
+    <div class="py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+              <span>Раздел: Работа с запросами</span>
+              <h3>Удаление запроса</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="site-section bg-white">
+      <div class="container">
+         <div class="row align-items-stretch retro-layout-2">
+            <div class="text-left">
+                <h5>Тема запроса: {{object.subscribe_request_subject}}</h5>
+                    <p>e-mail: {{ object.subscribe_request_name.email }}</p>
+                    <p>Заропс: {{ object.subscribe_request_text }}</p>
+                    <p>Тип запроса: {{ object.subscribe_request_type }}</p>
+                <p></p>Вы уверены, что хотите удалить данный запрос?<p></p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-danger" type="submit">Да</button>
+                    <p></p>
+                </form>
+            </div>
+          </div>
+        </div>
+    </div>
+{% endblock %}

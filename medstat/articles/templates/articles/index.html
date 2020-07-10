@@ -1,6 +1,6 @@
 {% extends "articles/base.html" %}
 
-{% block title %}Techdepartament{% endblock %}
+{% block title %}Medstat{% endblock %}
 
 {% block content %}
 <!------------------------------------------------------------------------------------------------------------------->
@@ -8,7 +8,7 @@
       <div class="container">
         <div class="row align-items-stretch retro-layout-2">
           <div class="col-md-4">
-            <a href="{% url 'articles:article' id=article_1.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_1.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+            <a href="{% url 'articles:article' id=article_1.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_1.article_img.url }} ) no-repeat; background-position: center center; background-size: cover;">
               <div class="text">
                 <div class="post-categories mb-3">
                   <span class="post-category bg-warning">Консультант по статистике</span>
@@ -17,7 +17,7 @@
                 <span class="date">{{article_1.article_date}}</span>
               </div>
             </a>
-            <a href="{% url 'articles:article' id=article_2.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_2.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+            <a href="{% url 'articles:article' id=article_2.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_2.article_img.url }} ) no-repeat; background-position: center center; background-size: cover;">
               <div class="text">
                 <div class="post-categories mb-3">
                   <span class="post-category bg-primary">Методы</span>
@@ -29,7 +29,7 @@
           </div>
 
           <div class="col-md-4">
-            <a href="{% url 'articles:article' id=article.id %}" class="h-entry img-5 h-100 gradient" style="background: url({{ article.article_img.url }} ) no-repeat; background-size: contain;">
+            <a href="{% url 'articles:article' id=article.id %}" class="h-entry img-5 h-100 gradient" style="background: url({{ article.article_img.url }} ) no-repeat; background-size: cover;">
               <div class="text">
                 <div class="post-categories mb-3">
                   <span class="post-category bg-danger">Интересные истории</span>
@@ -40,7 +40,7 @@
             </a>
           </div>
           <div class="col-md-4">
-            <a href="{% url 'articles:article' id=article_4.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_4.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+            <a href="{% url 'articles:article' id=article_4.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_4.article_img.url }} ) no-repeat; background-position: center center; background-size: cover;">
               <div class="text">
                 <div class="post-categories mb-3">
                   <span class="post-category bg-info">Статистика для медиков</span>
@@ -49,7 +49,7 @@
                 <span class="date">{{article_4.article_date}}</span>
               </div>
             </a>
-            <a href="{% url 'articles:article' id=article_5.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_5.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+            <a href="{% url 'articles:article' id=article_5.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_5.article_img.url }} ) no-repeat; background-position: center center; background-size: cover;">
               <div class="text">
                 <div class="post-categories mb-3">
                   <span class="post-category bg-success">Искусственный интеллект</span>
@@ -77,11 +77,6 @@
               <a href="{% url 'articles:article' id=article.id %}">
                 <img src="{{article.article_img.url}}" alt="Image" class="img-fluid rounded"></a>
               <div class="excerpt">
-
-<!--              Для вывода главного тэга в дальнейшем                -->
-<!--              <span class="post-category text-white bg-success mb-3">{{article.article_main_tag}}</span>-->
-<!--                <span class="post-category text-white bg-success mb-3">Главный тэг статьи</span>-->
-
               <h2><a href="{% url 'articles:article' id=article.id %}">{{article.article_name}}</a></h2>
               <div class="post-meta align-items-center text-left clearfix">
                 <span>&nbsp;-&nbsp; {{article.article_date}}</span>
@@ -91,6 +86,8 @@
               </div>
             </div>
           </div>
+          {% empty %}
+          <p>Список статей пуст. В данный момент мы ничего не можем показать. Зайдите похже или обратитесь к администратору сайта.</p>
           {% endfor %}
         </div>
 <!--        <div class="row text-center pt-5 border-top">-->
@@ -127,7 +124,7 @@
           </div>
 
           <div class="col-md-7">
-            <a href="{% url 'articles:article' id=article_12.id %}" class="hentry img-2 v-height mb30 gradient" style="background: url({{ article_12.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+            <a href="{% url 'articles:article' id=article_12.id %}" class="hentry img-2 v-height mb30 gradient" style="background: url({{ article_12.article_img.url }} ) no-repeat; background-position: center center; background-size: cover;">
               <span class="post-category text-white bg-success">Искусственный интеллект в медицине</span>
               <div class="text text-sm">
                 <h2>{{article_12.article_name}}</h2>
@@ -151,10 +148,8 @@
                 </div>
               </a>
             </div>
-
           </div>
         </div>
-
       </div>
     </div>
 <!------------------------------------------------------------------------------------------------------------------->

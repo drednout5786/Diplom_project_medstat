@@ -8,8 +8,8 @@
         <div class="row">
           <div class="col-md-12">
             <span>Раздел: Все тэги</span>
-            <h3>Статьи по тэгу: {{tag}}</h3>
-            <p>Все статьи по выбранному тэгу собраны здесь!</p>
+            <h3>Статьи по тэгу: {{tag.tag_name}}</h3>
+            <p>Всего найдено {{tag.art_number}} статей. Все статьи по выбранному тэгу собраны здесь!</p>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
                 <h3 class="heading">Все тэги:</h3>
                 <ul class="tags">
                     {% for tag_ in tags_all.all%}
-                    <li><a href="{% url 'articles:tag_articles' id=tag_.id %}">{{tag_}}</a></li>
+                    <li><a href="{% url 'articles:tag_articles' id=tag_.id %}">{{tag_.tag_name}} ({{tag_.art_number}})</a></li>
                     {% endfor %}
                 </ul>
             </div>

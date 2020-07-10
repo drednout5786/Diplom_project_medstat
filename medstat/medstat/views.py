@@ -15,7 +15,7 @@ def home_page(request):
     article_3 = get_object_or_404(Article, id=11)
     article_4 = get_object_or_404(Article, id=8)
     article_5 = get_object_or_404(Article, id=20)
-    article_all = Article.objects.all().order_by('?')
+    article_all = Article.objects.all()
     article_11 = get_object_or_404(Article, id=14)
     article_12 = get_object_or_404(Article, id=20)
     article_13 = get_object_or_404(Article, id=5)

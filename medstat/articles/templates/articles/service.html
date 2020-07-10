@@ -9,82 +9,113 @@
         <div class="row justify-content-center">
             <div class="col-md-12 col-lg-10">
                 <div class="post-entry text-center">
-                    <span class="post-category text-white bg-primary mb-3">Услуга</span>
-                    <h2 class="mb-4"><a href="#">Заказать статобработку</a></h2>
-                        <div class="post-meta align-items-center text-center"></div>
+                    <span class="post-category text-white bg-primary mb-3">Услуги</span>
+                    <h2 class="mb-4"><a href="#">Предлагаемые услуги</a></h2>
+                        <div class="post-meta align-items-center text-center">
+                            <a href="{% url 'articles:request_service' %}"><span class="post-category text-white bg-success mb-3">Заказать статобработку</span></a>
+                            <a href="{% url 'articles:request_consultation' %}"><span class="post-category text-white bg-success mb-3">Заказать консультацию</span></a>
+                            <a href="{% url 'articles:request_question' %}"><span class="post-category text-white bg-success mb-3">Задать вопрос</span></a>
+                            <a href="{% url 'articles:request_review' %}"><span class="post-category text-white bg-success mb-3">Заказать рецензию</span></a>
+                            {% if user.is_authenticated %}
+                              <a href="{% url 'users:subscribe' pk=user.pk %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+                            {% else %}
+                              <a href="{% url 'users:register' %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+                            {% endif %}
+                        </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!------------------------------------------------------------------------------------------------------------------->
-    <div class="site-section bg-lightx">
-      <div class="container">
-          <div class="text">
-              <h3>Статистическое исследование включает в себя шесть этапов:</h3>
-              <p>- cтатистическое наблюдение;</p>
-              <p>- кодировка и внесение данных в компьютер;</p>
-              <p>- первичная обработка, сводка и группировка результатов наблюдения;</p>
-              <p>- анализ сводных данных с помощью обобщающих показателей и особых приемов (методов/критериев);</p>
-              <p>- интерпретация полученных расчетов; </p>
-              <p>- оформление исследования согласно требованиям ВАК и/или научного журнала.</p>
-              <h3>Мы предлагаем полный спектр услуг для анализа проведенного статистического исследования.</h3>
-              <h3>Что мы не делаем?</h3>
-              <p>Проведение самого наблюдения.
-              <p>Не вносим данные наблюдений/исследований в компьютер. НО мы готовы проконсультировать по вопросам
-                  правильности кодировки. Это важно для того, чтобы в дальнейшем не пришлось перекодировать данные для
-                  использования их в расчетах.</p>
-              <p>Раздел в разработке. </p>
-          </div>
+<div class="site-section bg-lightx">
+  <div class="container">
+      <div class="text">
+          <h3>Заказ статобработки</h3>
+          <h4>Медстатистическое исследование включает в себя шесть этапов:</h4>
+          <p>- Медицинское/клиническое наблюдение;</p>
+          <p>- кодировка и внесение данных в компьютер;</p>
+          <p>- первичная обработка, сводка и группировка результатов наблюдения;</p>
+          <p>- анализ сводных данных с помощью обобщающих показателей и особых приемов (методов/критериев);</p>
+          <p>- интерпретация полученных расчетов; </p>
+          <p>- оформление исследования согласно требованиям ВАК и/или научного журнала.</p>
+          <h5>Мы предлагаем полный спектр услуг для анализа проведенного исследования.</h5>
+          <br>
+          <h4>Что мы не делаем?</h4>
+          <p>- не проводим само наблюдение.
+          <p>- не вносим данные наблюдений/исследований в компьютер. НО мы готовы проконсультировать по вопросам
+              правильности кодировки. Это важно для того, чтобы в дальнейшем не пришлось перекодировать данные для
+              использования их в расчетах.</p>
       </div>
-    </div>
+      <a href="{% url 'articles:request_service' %}"><span class="post-category text-white bg-success mb-3">Заказать статобработку</span></a>
+  </div>
+</div>
 <!------------------------------------------------------------------------------------------------------------------->
-    <div class="site-section bg-light">
-      <div class="container">
-          <div class="text">
-              <h3>Почему важно заказать расчеты у профессионалов в области статистики?</h3>
-              <p>1. Медицина и математика очень разные дисциплины. Одному человеку очень трудно в полной мере обладать как
-              медицинскими знаниями/быть отличным доктором, так и знать все статистические пакеты, их возможности, а также
-              быть в курсе всех существующих способов вычисления/критериев сравнения полученных данных, уметь наглядно визуализировать полученные результаты.</p>
-              <p>2. На Западе, грант на проведение медицинского исследования дается группе исследователей, в которой обязательно должен быть
-              профессиональный статистик. Причем он обязательно должен быть не приглашенным/консультантом, а состоять в штате группы, т.е.
-              быть на зарплате.</p>
-              <p>3. Оформление результатов исследования это кропотливый труд с большим количеством тонкостей. Не хочется отвлевать высококлассных
-              врачей на их соблюдение и выполнение. Задача врачей - лечить, а математиков - считать. Мы за разделение функций.</p>
-              <p></p>
-              <p></p>
-              <p></p>
-              <p>Раздел в разработке. </p>
-          </div>
+<div class="site-section bg-light">
+  <div class="container">
+      <div class="text">
+          <h3>Консультация включает в себя три этапа:</h3>
+          <p>- обсуждение предполагаемого исследования;</p>
+          <p>- обсуждение предполагаемых способов сравнения полученных результатов исседования;</p>
+          <p>- выбор способа кодировки и внесения данных в компьютер.</p>
+          <br>
+          <h4>Что мы не делаем?</h4>
+          <p>- не вносим данные наблюдений/исследований в компьютер.</p>
+      </div>
+      <a href="{% url 'articles:request_consultation' %}"><span class="post-category text-white bg-success mb-3">Заказать консультацию</span></a>
+  </div>
+</div>
+<!------------------------------------------------------------------------------------------------------------------->
+<div class="site-section bg-lightx">
+  <div class="container">
+      <div class="text">
+          <h3>Заказ рецензии включает в себя:</h3>
+          <p>- Отправка работы (статья в журнал, кандидатская/докторская диссертация, ВКР, отчет для гранта и т.д.);</p>
+          <p>- Получение через 5 дней развернутой рецензии с указанием статистических, смысловых/терминологических и технических замечаний.</p>
+      </div>
+      <a href="{% url 'articles:request_review' %}"><span class="post-category text-white bg-success mb-3">Заказать рецензию</span></a>
+  </div>
+</div>
+<!------------------------------------------------------------------------------------------------------------------->
+<div class="site-section bg-light">
+  <div class="container">
+      <div class="text">
+          <h3>Почему важно заказать расчеты у профессионалов в области статистики?</h3>
+          <p>1. Медицина и математика очень разные дисциплины. Одному человеку очень трудно в полной мере обладать как
+          медицинскими знаниями/быть отличным доктором, так и знать все статистические пакеты, их возможности, а также
+          быть в курсе всех существующих способов вычисления/критериев сравнения полученных данных, уметь наглядно визуализировать полученные результаты.</p>
+          <p>2. На Западе, грант на проведение медицинского исследования дается группе исследователей, в которой обязательно должен быть
+          профессиональный статистик. Причем он обязательно должен быть не приглашенным/консультантом, а состоять в штате группы, т.е.
+          быть на зарплате.</p>
+          <p>3. Оформление результатов исследования это кропотливый труд с большим количеством тонкостей. Не хочется отвлевать высококлассных
+          врачей на их соблюдение и выполнение. Задача врачей - лечить, а математиков - считать. Мы за разделение функций.</p>
+      </div>
+      <div class="pt-5">
+        <a href="{% url 'articles:tag_articles' id=9 %}"><span class="post-category text-white bg-primary mb-3">консультант по статистике</span></a>
+        <a href="{% url 'articles:tag_articles' id=2 %}"><span class="post-category text-white bg-primary mb-3">рецензия статистика</span></a>
+        <a href="{% url 'articles:tag_articles' id=1 %}"><span class="post-category text-white bg-primary mb-3">доказательная медицина</span></a>
+      </div>
+  </div>
+</div>
+<!------------------------------------------------------------------------------------------------------------------->
+<div class="site-section bg-lightx">
+  <div class="container">
+      <div class="text">
           <div class="pt-5">
-            <a href="{% url 'articles:tag_articles' id=9 %}"><span class="post-category text-white bg-primary mb-3">консультант по статистике</span></a>
-            <a href="{% url 'articles:tag_articles' id=2 %}"><span class="post-category text-white bg-primary mb-3">рецензия статистика</span></a>
-            <a href="{% url 'articles:tag_articles' id=1 %}"><span class="post-category text-white bg-primary mb-3">доказательная медицина</span></a>
+            <h3>Заказать услугу можно здесь:</h3>
+            <a href="{% url 'articles:request_service' %}"><span class="post-category text-white bg-success mb-3">Заказать статобработку</span></a>
+            <a href="{% url 'articles:request_consultation' %}"><span class="post-category text-white bg-success mb-3">Заказать консультацию</span></a>
+            <a href="{% url 'articles:request_question' %}"><span class="post-category text-white bg-success mb-3">Задать вопрос</span></a>
+            <a href="{% url 'articles:request_review' %}"><span class="post-category text-white bg-success mb-3">Заказать рецензию</span></a>
+            {% if user.is_authenticated %}
+              <a href="{% url 'users:subscribe' pk=user.pk %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+            {% else %}
+              <a href="{% url 'users:register' %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+            {% endif %}
           </div>
       </div>
-    </div>
-<!------------------------------------------------------------------------------------------------------------------->
-   <div class="site-section bg-lightx">
-      <div class="container">
-          <div class="text">
-              <h3>Заказать статобработку</h3>
-              <div class="container">
-                <a href="{% url 'articles:request_service' %}" class="btn btn btn-success">Заказать</a>
-              </div>
-              <div class="pt-5">
-                <p>Если у Вас остались вопросы, то можете заказать консультацию или задать вопрос.</p>
-                <a href="#"><span class="post-category text-white bg-success mb-3">Заказать консультацию</span></a>
-                <a href="#"><span class="post-category text-white bg-success mb-3">Задать вопрос</span></a>
-                <a href="#"><span class="post-category text-white bg-success mb-3">Заказать рецензию</span></a>
-                {% if user.is_authenticated %}
-                  <a href="{% url 'users:subscribe' pk=user.pk %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
-                {% else %}
-                  <a href="{% url 'users:register' %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
-                {% endif %}
-              </div>
-          </div>
-      </div>
-    </div>
+  </div>
+</div>
 <!------------------------------------------------------------------------------------------------------------------->
 <div class="site-section bg-light">
       <div class="container">
@@ -105,7 +136,7 @@
             </div>
 
           <div class="col-md-7">
-            <a href="{% url 'articles:article' id=article_12.id %}" class="hentry img-2 v-height mb30 gradient" style="background: url({{ article_12.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+            <a href="{% url 'articles:article' id=article_12.id %}" class="hentry img-2 v-height mb30 gradient" style="background: url({{ article_12.article_img.url }} ) no-repeat; background-position: center center; background-size: cover;">
               <span class="post-category text-white bg-success">Искусственный интеллект в медицине</span>
               <div class="text text-sm">
                 <h2>{{article_12.article_name}}</h2>
@@ -133,5 +164,5 @@
       </div>
       </div>
 </div>
-
+<!------------------------------------------------------------------------------------------------------------------->
 {% endblock %}

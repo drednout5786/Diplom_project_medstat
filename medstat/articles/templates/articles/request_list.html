@@ -1,0 +1,72 @@
+{% extends "articles/base.html" %}
+
+{% block title %}Список запросов{% endblock %}
+
+{% block content %}
+
+    <div class="py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+              <span>Раздел: Работа с запросами</span>
+              <h3>Все запросы</h3>
+              <p>Все запросы от пользователей собраны здесь!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section bg-white">
+      <div class="container">
+        <div class="row align-items-stretch retro-layout-2">
+            <div id="content" class="flex">
+                <h5>Выберите действия</h5>
+                <p>Количество запросов: {{reqs.count}}</p>
+                {% if reqs.count > 0 %}
+                <table rules=all frame=box>
+                    <thead align="center"><th>Id</th><th>E-mail</th><th>Тип запроса</th><th>Тема запроса</th><th>Текст</th><th>Дата</th><th>Статус</th><th>Действия</th></thead>
+                    {% for req in reqs %}
+                    <tr>
+                        <td>{{ req.id }}</td>
+                        <td>{{ req.subscribe_request_name.email }}</td>
+                        <td>{{ req.subscribe_request_type }}</td>
+                        <td>{{ req.subscribe_request_subject }}</td>
+                        <td>{{ req.subscribe_request_text }}</td>
+                        <td>{{ req.subscribe_request_date }}</td>
+                        <td>{{ req.subscribe_request_is_active }}</td>
+                        <td><a href="{% url 'articles:request_update' pk=req.pk %}">Изменить</a> | <a href="{% url 'articles:request_delete' pk=req.pk %}">Удалить</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endif %}
+
+<!--            {% regroup reqs by subscribe_request_type as req_active %}-->
+<!--            <ul>-->
+<!--            {% for req in req_active %}-->
+<!--                <li>{{ req.grouper }}-->
+<!--                <ul>-->
+<!--                    {% for zap in req.list %}-->
+<!--                      <li>{{ zap.subscribe_request_name.email }}: {{ zap.subscribe_request_subject }} : {{ zap.subscribe_request_text }} : {{ zap.subscribe_request_is_active }}</li>-->
+<!--                    {% endfor %}-->
+<!--                </ul>-->
+<!--                </li>-->
+<!--            {% endfor %}-->
+<!--            </ul>-->
+
+<!--https://odmin4eg.ru/2011/django-regroup-primer/-->
+<!--            {% regroup reqs by subscribe_request_date as req_active %}-->
+<!--             <select id="id_sub">-->
+<!--             <option value="">-&#45;&#45;&#45;&#45;</option>-->
+<!--              {% for ca in req_active %}-->
+<!--                  <optgroup label="{{ca.grouper}}">-->
+<!--                         {% for item in ca.list %}-->
+<!--                      <option value="{{ item.subscribe_request_name }}"> {{ item.subscribe_request_subject }}</option>-->
+<!--                         {% endfor %}-->
+<!--                  </optgroup>-->
+<!--              {% endfor %}-->
+<!--             </select>-->
+            </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

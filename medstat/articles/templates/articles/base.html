@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>{% block title %}{% endblock %}</title>
@@ -64,7 +64,7 @@
           <div class="col-4 site-logo">
             <a href="{% url 'home' %}" class="text-black h2 mb-0">Медстатистика</a>
             <!-- логотип будет позже  https://itchief.ru/lessons/bootstrap-3/38-bootstrap-3-navigation-menu-->
-              <a class="navbar-brand" href="{% url 'home' %}"><img src="navbar-brand.svg" height="36" alt="Image"></a>
+<!--              <a class="navbar-brand" href="{% url 'home' %}"><img src="navbar-brand.svg" height="36" alt="Image"></a>-->
           </div>
 
           <div class="col-8 text-right">
@@ -76,10 +76,11 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                       aria-expanded="false">Услуги<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                      <li><a href="{% url 'articles:service' %}">Статобработка</a></li>
-                      <li><a href="#">Консультация</a></li>
-                      <li><a href="#">Рецензия</a></li>
-                      <li><a href="#">Задать вопрос</a></li>
+                      <li><a href="{% url 'articles:service' %}">Все услуги</a></li>
+                      <li><a href="{% url 'articles:request_service' %}">Статобработка</a></li>
+                      <li><a href="{% url 'articles:request_consultation' %}">Консультация</a></li>
+                      <li><a href="{% url 'articles:request_review' %}">Рецензия</a></li>
+                      <li><a href="{% url 'articles:request_question' %}">Задать вопрос</a></li>
                       {% if user.is_authenticated %}
                       <li><a href="{% url 'users:subscribe' pk=user.pk %}">Подписка на новости</a></li>
                       {% else %}
@@ -102,6 +103,7 @@
                 </li>
                 {% if user.is_superuser %}
                 <li><a href="{% url 'articles:tag_list' %}">Все тэги</a></li>
+                <li><a href="{% url 'articles:request_list' %}">Запросы</a></li>
                 {% endif %}
                 {% if user.is_authenticated %}
                     <p class="navbar-text">Вы вошли как {{user.username}}</p> |

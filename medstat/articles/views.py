@@ -15,7 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Create your views (представление) here.
 
 def main_page(request):
-    art_all = Article.objects.all().order_by('-article_date')
+    art_all = Article.objects.all().order_by('?')  # Статьи вперемешку
     return render(request, 'articles/category.html', {'articles': art_all})
 
 @login_required
@@ -27,7 +27,6 @@ def article_description(request, id):
     article_12 = get_object_or_404(Article, id=20)
     article_13 = get_object_or_404(Article, id=5)
     article_14 = get_object_or_404(Article, id=12)
-
     context = {
         'article': art_one,
         'tags_article_all': tags_article_all,
@@ -42,7 +41,8 @@ def article_description(request, id):
 def tag_articles(request, id):
     tag_one = get_object_or_404(Tag, id=id)
     # получаем все статьи, которые имеют тэг tag_one
-    articles_all = Article.objects.filter(article_tag__tag_name=tag_one)
+    # articles_all = Article.objects.filter(article_tag__tag_name=tag_one)
+    articles_all = Article.objects.filter(article_tag=tag_one)
     tags_all = Tag.objects.all()
     context = {
         'tag': tag_one,
@@ -88,6 +88,10 @@ def service(request):
     return render(request, 'articles/service.html', context)
 
 @login_required
+def success_request(request):
+        return render(request, 'articles/success_request.html')
+
+@login_required
 def request_service(request):
     if request.method == 'GET':  # Когда мы открываем шаблон
         form = RequestForm()
@@ -105,25 +109,53 @@ def request_service(request):
             return render(request, 'articles/request_service.html', {'form': form})
 
 @login_required
-def success_request(request):
-        return render(request, 'articles/success_request.html')
+def request_consultation(request):
+    if request.method == 'GET':  # Когда мы открываем шаблон
+        form = RequestForm()
+        return render(request, 'articles/request_consultation.html', {'form': form})
+    else:
+        form = RequestForm(request.POST)
+        if form.is_valid():
+            temp = form.save(commit=False)
+            temp.subscribe_request_name = request.user
+            temp.subscribe_request_type = 'CO'
+            temp.save()
+            return HttpResponseRedirect(reverse('articles:success_request'))
+        else:
+            return render(request, 'articles/request_consultation.html', {'form': form})
 
-class ArticleListView(ListView):
-    model = Article
-    template_name = 'articles/article_list.html'
-    context_object_name = 'tags'
+@login_required
+def request_review(request):
+    if request.method == 'GET':  # Когда мы открываем шаблон
+        form = RequestForm()
+        return render(request, 'articles/request_review.html', {'form': form})
+    else:
+        form = RequestForm(request.POST)
+        if form.is_valid():
+            temp = form.save(commit=False)
+            temp.subscribe_request_name = request.user
+            temp.subscribe_request_type = 'RV'
+            temp.save()
+            return HttpResponseRedirect(reverse('articles:success_request'))
+        else:
+            return render(request, 'articles/request_review.html', {'form': form})
 
-class ArticleUpdateView(UpdateView):
-    model = Article
-    fields = '__all__'
-    template_name = 'articles/article_update.html'
-    success_url = reverse_lazy('articles:index')
-
-class ArticleDeleteView(DeleteView):
-    template_name = 'articles/article_delete.html'
-    model = Article
-    success_url = reverse_lazy('articles:index')
-
+@login_required
+def request_question(request):
+    if request.method == 'GET':  # Когда мы открываем шаблон
+        form = RequestForm()
+        return render(request, 'articles/request_question.html', {'form': form})
+    else:
+        form = RequestForm(request.POST)
+        if form.is_valid():
+            temp = form.save(commit=False)
+            temp.subscribe_request_name = request.user
+            temp.subscribe_request_type = 'QS'
+            temp.save()
+            return HttpResponseRedirect(reverse('articles:success_request'))
+        else:
+            return render(request, 'articles/request_question.html', {'form': form})
+#------------------------------------------------------
 class PermissionMixin:
     def test_func(self):
         return self.request.user.is_superuser
@@ -131,7 +163,26 @@ class PermissionMixin:
     def handle_no_permission(self): # перенаправляет пользователя на login_url
         return HttpResponseRedirect(reverse('users:login'))
 
-class TagListView(LoginRequiredMixin, ListView):
+# Статьи ------------------------------------------------------
+class ArticleListView(PermissionMixin, UserPassesTestMixin, ListView):
+    model = Article
+    template_name = 'articles/article_list.html'
+    context_object_name = 'tags'
+
+class ArticleUpdateView(PermissionMixin, UserPassesTestMixin, UpdateView):
+    model = Article
+    fields = '__all__'
+    template_name = 'articles/article_update.html'
+    success_url = reverse_lazy('articles:index')
+
+class ArticleDeleteView(PermissionMixin, UserPassesTestMixin, DeleteView):
+    template_name = 'articles/article_delete.html'
+    model = Article
+    success_url = reverse_lazy('articles:index')
+
+# Тэги ------------------------------------------------------
+# class TagListView(LoginRequiredMixin, ListView): # Разрешает заходить авторизованному пользователю
+class TagListView(PermissionMixin, UserPassesTestMixin, ListView):
     model = Tag
     template_name = 'articles/tag_list.html'
     context_object_name = 'tags'
@@ -140,7 +191,7 @@ class TagListView(LoginRequiredMixin, ListView):
     # можно наложить условия на объекты
         #return Tag.objects.all()
 
-class TagDetailView(LoginRequiredMixin, DetailView):
+class TagDetailView(PermissionMixin, UserPassesTestMixin, DetailView):
     model = Tag
     template_name = 'articles/tag_one.html'
 
@@ -160,3 +211,26 @@ class TagDeleteView(PermissionMixin, UserPassesTestMixin, DeleteView):
     template_name = 'articles/tag_delete.html'
     model = Tag
     success_url = reverse_lazy('articles:tag_list')
+
+# Запросы ------------------------------------------------------
+class ReqListView(PermissionMixin, UserPassesTestMixin, ListView):
+    model = Subscriber_request
+    template_name = 'articles/request_list.html'
+    context_object_name = 'reqs'
+
+class ReqDetailView(PermissionMixin, UserPassesTestMixin, DetailView):
+    model = Subscriber_request
+    template_name = 'articles/request_one.html'
+
+class ReqUpdateView(PermissionMixin, UserPassesTestMixin, UpdateView):
+    model = Subscriber_request
+    fields = '__all__'
+    template_name = 'articles/request_update.html'
+    success_url = reverse_lazy('articles:request_list')
+
+class ReqDeleteView(PermissionMixin, UserPassesTestMixin, DeleteView):
+    template_name = 'articles/request_delete.html'
+    model = Subscriber_request
+    success_url = reverse_lazy('articles:request_list')
+
+# Запрос по пользователям: https://ru.stackoverflow.com/questions/990082/Как-вывести-все-записи-пользователя-на-django

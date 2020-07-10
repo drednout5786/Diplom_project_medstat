@@ -11,7 +11,7 @@
                 <div class="post-entry text-center">
 <!--                    <span class="post-category text-white bg-success mb-3">{{tags}}</span>-->
                     {% for tag in tags_article_all.all%}
-                    <a href="{% url 'articles:tag_articles' id=tag.id %}"><span class="post-category text-white bg-primary mb-3">{{tag}}</span></a>
+                    <a href="{% url 'articles:tag_articles' id=tag.id %}"><span class="post-category text-white bg-primary mb-3">{{tag.tag_name}}</span></a>
                     {% endfor %}
                     <h2 class="mb-4"><a href="{% url 'articles:article' id=article.id %}">{{article.article_name}}</a></h2>
                         <div class="post-meta align-items-center text-center">
@@ -29,12 +29,12 @@
         <div class="row blog-entries element-animate">
           <div class="col-md-12 col-lg-8 main-content">
             <div class="post-content-body">
-                {{article.article_text}}
+                {{article.article_text|linebreaksbr}}
             </div>
             <div class="pt-5">
               <p>Тэги:
                 {% for tag in tags_article_all.all%}
-                <a href="{% url 'articles:tag_articles' id=tag.id %}"><span class="post-category text-white bg-primary mb-3">{{tag}}</span></a>
+                <a href="{% url 'articles:tag_articles' id=tag.id %}"><span class="post-category text-white bg-primary mb-3">{{tag.tag_name}} ({{tag.art_number}})</span></a>
                 {% endfor %}
               </p>
             </div>
@@ -46,7 +46,7 @@
                   <h3 class="heading">Все тэги:</h3>
                   <ul class="tags">
                       {% for tag_ in tags_all.all%}
-                      <li><a href="{% url 'articles:tag_articles' id=tag_.id %}">{{tag_}}</a></li>
+                      <li><a href="{% url 'articles:tag_articles' id=tag_.id %}">{{tag_.tag_name}} ({{tag_.art_number}})</a></li>
                       {% endfor %}
                   </ul>
                 </div>
@@ -103,7 +103,7 @@
             </div>
 
           <div class="col-md-7">
-            <a href="{% url 'articles:article' id=article_12.id %}" class="hentry img-2 v-height mb30 gradient" style="background: url({{ article_12.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+            <a href="{% url 'articles:article' id=article_12.id %}" class="hentry img-2 v-height mb30 gradient" style="background: url({{ article_12.article_img.url }} ) no-repeat; background-position: center center; background-size: cover;">
               <span class="post-category text-white bg-success">Искусственный интеллект в медицине</span>
               <div class="text text-sm">
                 <h2>{{article_12.article_name}}</h2>
