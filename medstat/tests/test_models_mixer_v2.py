@@ -1,6 +1,6 @@
 from django.test import TestCase
 from mixer.backend.django import mixer
-from articles.models import Article, Tag, Subscriber_request
+from articles.models import Article, Tag, Subscriber_request, PageHit
 from users.models import ArticlesUser
 
 # Использование mixer pip install mixer
@@ -20,6 +20,9 @@ class ArticleTestCase_Mixer(TestCase):
         self.article_2.article_tag.add(self.tag1)
 
         self.user = mixer.blend(ArticlesUser, email=mixer.FAKE)
+
+        self.url = mixer.blend(PageHit)
+
 
         # print('Тэги: ', self.tag1.tag_name, '\n', self.tag2.tag_name)
         # print('Название статьи: ', self.article_1.article_name, '\nТекст статьи: ', self.article_1.article_text, '\n')
@@ -45,3 +48,6 @@ class ArticleTestCase_Mixer(TestCase):
 
     def test_20_subscribe_request(self):
         self.assertTrue(self.user.email_len_not_null())
+
+    def test_25_PageHit(self):
+        self.assertTrue(self.url.article_url_len())

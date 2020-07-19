@@ -5,11 +5,25 @@ from datetime import datetime
 import os
 from django.conf import settings
 from users.models import ArticlesUser  # импортируем из users
-# from django.contrib.auth.models import User
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
 
-class Tag(models.Model):
+from django.core.signals import request_finished
+from django.dispatch import receiver
+
+#https://djbook.ru/rel1.9/topics/db/models.html#model-inheritance - наследование моделей
+
+class AvtiveManager(models.Manager):
+    def get_queryset(self):
+        all_objects = super().get_queryset()
+        return all_objects.filter(is_active=True)
+
+class IsActiveMixin(models.Model):
+    objects = models.Manager()
+    active_objects = AvtiveManager()
+    is_active = models.BooleanField('Статус активности', default=True)
+    class Meta:
+        abstract = True  # Чтобы не было изменеий в таблицах
+
+class Tag(IsActiveMixin, models.Model):
     tag_name = models.CharField('название тэга', max_length=1000)
 
     def art_number(self):
@@ -25,7 +39,7 @@ class Tag(models.Model):
         # return f'{self.tag_name}'
         return f'{self.tag_name}, количество статей по тэгу: {self.art_number()}, Есть ли у тега статьи: {self.is_art_not_none()}'
 
-class Article(models.Model):
+class Article(IsActiveMixin, models.Model):
     #, default = os.path.join(settings.MEDIA_ROOT,'articles','happy_lion.jpg')
     article_name = models.CharField('заголовок статьи', max_length=1000, null=True)
     article_text = models.TextField('текст статьи', max_length=10000, null=True)
@@ -57,7 +71,7 @@ class Article(models.Model):
         # return "%s (%s)" % (self.article_name, ", ".join(Tag.tag_name for Tag in self.article_tag.all()))
 
 #  https://stackoverflow.com/questions/26312219/operationalerror-no-such-column-django
-class Subscriber_request(models.Model):
+class Subscriber_request(IsActiveMixin, models.Model):
     STATPROCESSING = 'SP'
     CONSULTATION = 'CO'
     QUESTION = 'QS'
@@ -73,15 +87,39 @@ class Subscriber_request(models.Model):
     subscribe_request_subject = models.CharField('Тема обращения', max_length=200, blank=False, default='')
     subscribe_request_text = models.TextField('Текст обращения', max_length=10000, blank=False, default='')
     subscribe_request_date = models.DateTimeField('Дата обращения', default=datetime.now())
-    subscribe_request_is_active = models.BooleanField('Статус выполнения', default=False)
+    subscribe_request_status = models.BooleanField('Статус выполнения', default=False)
 
     # def request_type_number(self):  # Количество тегов на статью
     #     return len(self.subscribe_request_type.all(subscribe_request_type='SP'))
 
+    class Meta:
+        ordering = ('-subscribe_request_date',)
+
     def __str__(self):
         return f'{self.subscribe_request_name}, ' \
                f'тип запроса: {self.subscribe_request_type}, ' \
-               f'статус запроса: {self.subscribe_request_is_active}, ' \
+               f'статус запроса: {self.subscribe_request_status}, ' \
                f'дата обращения: {self.subscribe_request_date}, ' \
                f'тема обращения: {self.subscribe_request_subject}, ' \
                f'обращение: {self.subscribe_request_text}'
+
+class PageHit(IsActiveMixin, models.Model):
+    url = models.CharField(unique=True, max_length=2000)
+    count = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        verbose_name = 'счётчик'
+        verbose_name_plural = 'счётчики'
+
+    def article_url_len(self):  # Длина url статьи >0
+        if len(self.url) > 0:
+            return True
+        return False
+
+    def __str__(self):
+        return f'{self.url}, количество просмотров: {self.count}'
+
+
+
+
+

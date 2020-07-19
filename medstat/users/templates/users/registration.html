@@ -19,9 +19,10 @@
                 {%csrf_token%}
                 <table>{{ form.as_table }}</table>
 <!--                {{form.as_p}}-->
-            <button type="submit">Зарегистрироваться</button>
-            <form>
+                <button type="submit">Зарегистрироваться</button>
+                <sub><a href="{% url 'users:login' %}" style="text-decoration: none; color: blue; padding:1%; cursor:pointer;">Уже зарегистрированы ?</a></sub>
+            </form>
         </div>
       </div>
     </div>
-{% endblock %}
+{% endblock content %}

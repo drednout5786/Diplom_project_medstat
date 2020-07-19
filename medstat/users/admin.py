@@ -1,31 +1,33 @@
 from django.contrib import admin
 # from django.contrib.auth.admin import UserAdmin
-from .models import ArticlesUser
-
+from .models import ArticlesUser, Infofile
+from django.db.models import signals
+from django.core.mail import send_mail
 from .forms import CustomUserChangeForm, RegistrationUserForm
 
 # Register your models here.
-admin.site.register(ArticlesUser)
 
-# https://stackoverflow.com/questions/15012235/using-django-auth-useradmin-for-a-custom-user-model
-# admin.site.register(UserAdmin)
-# class CustomUserAdmin(UserAdmin):
-#     add_form = RegistrationUserForm
-#     form = CustomUserChangeForm
-#     model = ArticlesUser
-#     list_display = ('email', 'is_staff', 'is_subscribed',)
-#     list_filter = ('email', 'is_staff', 'is_subscribed',)
-#     fieldsets = (
-#         (None, {'fields': ('email', 'password')}),
-#         ('Permissions', {'fields': ('is_staff', 'is_active')}),
-#     )
-#     add_fieldsets = (
-#         (None, {
-#             'classes': ('wide',),
-#             'fields': ('email', 'password1', 'password2', 'is_staff', 'is_subscribed')}
-#         ),
-#     )
-#     search_fields = ('email',)
-#     ordering = ('email',)
-#
-# admin.site.register(ArticlesUser, CustomUserAdmin)
+def set_active(modeladmin, request, queryset):
+    queryset.update(is_active=True)
+
+def set_disactive(modeladmin, request, queryset):
+    queryset.update(is_active=False)
+
+class ArticlesUserAdmin(admin.ModelAdmin):
+    list_display = ['username', 'email', 'is_subscribed', 'is_active', 'date_joined', 'last_login']
+    actions = [set_active, set_disactive]
+    ordering = ['date_joined', 'last_login']
+    list_filter = ('username', 'email')
+    search_fields = ('username', 'email')
+
+class InfofileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'date_visit']
+    ordering = ['date_visit']
+    list_filter = ('user', 'date_visit')
+
+
+admin.site.register(ArticlesUser, ArticlesUserAdmin)
+admin.site.register(Infofile, InfofileAdmin)
+
+# admin.site.register(ArticlesUser)
+

@@ -12,10 +12,10 @@
                     <span class="post-category text-white bg-primary mb-3">Услуги</span>
                     <h2 class="mb-4"><a href="#">Предлагаемые услуги</a></h2>
                         <div class="post-meta align-items-center text-center">
-                            <a href="{% url 'articles:request_service' %}"><span class="post-category text-white bg-success mb-3">Заказать статобработку</span></a>
-                            <a href="{% url 'articles:request_consultation' %}"><span class="post-category text-white bg-success mb-3">Заказать консультацию</span></a>
+                            <a href="#stat_process"><span class="post-category text-white bg-success mb-3">Заказать статобработку</span></a>
+                            <a href="#consultation"><span class="post-category text-white bg-success mb-3">Заказать консультацию</span></a>
+                            <a href="#review"><span class="post-category text-white bg-success mb-3">Заказать рецензию</span></a>
                             <a href="{% url 'articles:request_question' %}"><span class="post-category text-white bg-success mb-3">Задать вопрос</span></a>
-                            <a href="{% url 'articles:request_review' %}"><span class="post-category text-white bg-success mb-3">Заказать рецензию</span></a>
                             {% if user.is_authenticated %}
                               <a href="{% url 'users:subscribe' pk=user.pk %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
                             {% else %}
@@ -31,7 +31,7 @@
 <div class="site-section bg-lightx">
   <div class="container">
       <div class="text">
-          <h3>Заказ статобработки</h3>
+          <h3 id="stat_process">Заказ статобработки</h3>
           <h4>Медстатистическое исследование включает в себя шесть этапов:</h4>
           <p>- Медицинское/клиническое наблюдение;</p>
           <p>- кодировка и внесение данных в компьютер;</p>
@@ -54,7 +54,7 @@
 <div class="site-section bg-light">
   <div class="container">
       <div class="text">
-          <h3>Консультация включает в себя три этапа:</h3>
+          <h3 id="consultation">Консультация включает в себя три этапа:</h3>
           <p>- обсуждение предполагаемого исследования;</p>
           <p>- обсуждение предполагаемых способов сравнения полученных результатов исседования;</p>
           <p>- выбор способа кодировки и внесения данных в компьютер.</p>
@@ -69,7 +69,7 @@
 <div class="site-section bg-lightx">
   <div class="container">
       <div class="text">
-          <h3>Заказ рецензии включает в себя:</h3>
+          <h3 id="review">Заказ рецензии включает в себя:</h3>
           <p>- Отправка работы (статья в журнал, кандидатская/докторская диссертация, ВКР, отчет для гранта и т.д.);</p>
           <p>- Получение через 5 дней развернутой рецензии с указанием статистических, смысловых/терминологических и технических замечаний.</p>
       </div>

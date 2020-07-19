@@ -8,8 +8,9 @@ app_name = 'users'
 urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('login/', views.UserLoginView.as_view(), name='login'),
-    path('register/', views.UserCreateView.as_view(), name='register'),
-    path('success_register/', views.UserLoginView_2.as_view(), name='success_register'),
+    path('register/', views.register, name='register'),
+    path('activate/<uidb64>/<token>/', views.activate, name='activate'),
+    path('success_verification/', views.success_verification, name='success_verification'),
     path('subscribe/<int:pk>/', views.SubscribeUpdateView.as_view(), name='subscribe'),
     path('success_subscribe/', views.success_subscribe, name='success_subscribe'),
 ]

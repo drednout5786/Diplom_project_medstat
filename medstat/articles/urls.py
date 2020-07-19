@@ -39,6 +39,10 @@ urlpatterns = [
     path('request-question/', views.request_question, name='request_question'),
     path('success-request/', views.success_request, name='success_request'),
     path('requests/', views.ReqListView.as_view(), name='request_list'),
+    path('requests_SP/', views.ReqListView_SP.as_view(), name='request_list_SP'),
+    path('requests_CO/', views.ReqListView_CO.as_view(), name='request_list_CO'),
+    path('requests_QS/', views.ReqListView_QS.as_view(), name='request_list_QS'),
+    path('requests_RV/', views.ReqListView_RV.as_view(), name='request_list_RV'),
     path('request-update/<int:pk>/', views.ReqUpdateView.as_view(), name='request_update'),
     path('request-delete/<int:pk>/', views.ReqDeleteView.as_view(), name='request_delete'),
 ]

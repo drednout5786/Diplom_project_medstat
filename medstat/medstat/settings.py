@@ -27,28 +27,36 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
     'articles.apps.ArticlesConfig',
     'users.apps.UsersConfig',
-    # 'users',
+    # 'social.apps.django_app.default',  # https://pocoz.gitbooks.io/django-v-primerah/glava-4-sozdanie-social-website/avtorizatsiya-cherez-sotsialnie-seti.html
+    'social_django',
     'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
+    'django.contrib.auth',  # Фреймворк аутентификации и моделей по умолчанию
+    'django.contrib.contenttypes',  # Django контент-типовая система (даёт разрешения, связанные с моделями)
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+# Социальные сети
+# https://evileg.com/ru/post/11/
+# https://evileg.com/ru/post/420/ FB
+
+# https://evileg.com/ru/post/367/ VK
+# pip install social-auth-app-django
+# python manage.py migrate
+# PostgreSQL...
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',  # Управление сессиями между запросами
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',  # Связывает пользователей, использующих сессии, запросами
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -72,7 +80,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'medstat.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -82,7 +89,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -116,7 +122,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -125,6 +130,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = [
     'medstat/articles/static',
 ]
+
 # определение места хранения фотографий
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -134,7 +140,22 @@ AUTH_USER_MODEL = 'users.ArticlesUser'
 
 # Редиректы при регистрации/выходе
 LOGIN_REDIRECT_URL = '/'
-
 LOGOUT_REDIRECT_URL = '/'
-
 LOGIN_URL = '/users/login'
+
+# https://code.tutsplus.com/ru/tutorials/using-celery-with-django-for-background-task-processing--cms-28732
+# Development
+# Для тестирования https://developer.mozilla.org/ru/docs/Learn/Server-side/Django/Аутентификация
+# Console backend
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#  suggests the dummy backend
+# EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+# https://docs.djangoproject.com/en/2.0/topics/email/#smtp-backend
+# Production
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'elenaschepkina@gmail.com'
+# EMAIL_HOST_PASSWORD = 'antohska'
+# EMAIL_PORT = 587

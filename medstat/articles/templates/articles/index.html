@@ -14,7 +14,7 @@
                   <span class="post-category bg-warning">Консультант по статистике</span>
                 </div>
                 <h2>{{article_1.article_name}}</h2>
-                <span class="date">{{article_1.article_date}}</span>
+                <span class="date">{{article_1.article_date|date:"d.m.Y в H:i"}}</span>
               </div>
             </a>
             <a href="{% url 'articles:article' id=article_2.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_2.article_img.url }} ) no-repeat; background-position: center center; background-size: cover;">
@@ -23,7 +23,7 @@
                   <span class="post-category bg-primary">Методы</span>
                 </div>
                 <h2>{{article_2.article_name}}</h2>
-                <span class="date">{{article_2.article_date}}</span>
+                <span class="date">{{article_2.article_date|date:"d.m.Y в H:i"}}</span>
               </div>
             </a>
           </div>
@@ -35,7 +35,7 @@
                   <span class="post-category bg-danger">Интересные истории</span>
                 </div>
                 <h2>{{article.article_name}}</h2>
-                <span class="date">{{article.article_date}}</span>
+                <span class="date">{{article.article_date|date:"d.m.Y в H:i"}}</span>
               </div>
             </a>
           </div>
@@ -46,7 +46,7 @@
                   <span class="post-category bg-info">Статистика для медиков</span>
                 </div>
                 <h2>{{article_4.article_name}}</h2>
-                <span class="date">{{article_4.article_date}}</span>
+                <span class="date">{{article_4.article_date|date:"d.m.Y в H:i"}}</span>
               </div>
             </a>
             <a href="{% url 'articles:article' id=article_5.id %}" class="h-entry mb-30 v-height gradient" style="background: url({{ article_5.article_img.url }} ) no-repeat; background-position: center center; background-size: cover;">
@@ -55,7 +55,7 @@
                   <span class="post-category bg-success">Искусственный интеллект</span>
                 </div>
                 <h2>{{article_5.article_name}}</h2>
-                <span class="date">{{article_5.article_date}}</span>
+                <span class="date">{{article_5.article_date|date:"d.m.Y в H:i"}}</span>
               </div>
             </a>
           </div>
@@ -71,7 +71,7 @@
           </div>
         </div>
         <div class="row">
-          {% for article in article_all.all%}
+          {% for article in articles %}
           <div class="col-lg-4 mb-4">
             <div class="entry2">
               <a href="{% url 'articles:article' id=article.id %}">
@@ -79,7 +79,7 @@
               <div class="excerpt">
               <h2><a href="{% url 'articles:article' id=article.id %}">{{article.article_name}}</a></h2>
               <div class="post-meta align-items-center text-left clearfix">
-                <span>&nbsp;-&nbsp; {{article.article_date}}</span>
+                <span>&nbsp;-&nbsp; {{article.article_date|date:"d.m.Y в H:i"}}</span>
               </div>
                 <p>{{article.article_text_short}}</p>
                 <p><a href="{% url 'articles:article' id=article.id %}">Читать полностью</a></p>
@@ -87,21 +87,24 @@
             </div>
           </div>
           {% empty %}
-          <p>Список статей пуст. В данный момент мы ничего не можем показать. Зайдите похже или обратитесь к администратору сайта.</p>
+            <p>Список статей пуст. В данный момент мы ничего не можем показать. Зайдите позже или обратитесь к администратору сайта.</p>
           {% endfor %}
         </div>
-<!--        <div class="row text-center pt-5 border-top">-->
-<!--          <div class="col-md-12">-->
-<!--            <div class="custom-pagination">-->
-<!--              <span>1</span>-->
-<!--              <a href="#">2</a>-->
-<!--              <a href="#">3</a>-->
-<!--              <a href="#">4</a>-->
-<!--              <span>...</span>-->
-<!--              <a href="#">15</a>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
+        <div class="pagination">
+          <span class="step-links">
+              {% if articles.has_previous %}
+                <a href="?page=1">&laquo; первая</a>
+                <a href="?page={{ articles.previous_page_number }}">предыдущая</a>
+              {% endif %}
+              <span class="current">
+                Страница {{ articles.number }} из {{ articles.paginator.num_pages }}.
+              </span>
+              {% if articles.has_next %}
+                <a href="?page={{ articles.next_page_number }}">следующая</a>
+                <a href="?page={{ articles.paginator.num_pages }}">последняя &raquo;</a>
+              {% endif %}
+          </span>
+        </div>
       </div>
     </div>
 <!------------------------------------------------------------------------------------------------------------------->
@@ -118,7 +121,7 @@
               <span class="post-category text-white bg-danger">Рецензия статистика</span>
               <div class="text">
                 <h2>{{article_11.article_name}}</h2>
-                <span>{{article_11.article_date}}</span>
+                <span>{{article_11.article_date|date:"d.m.Y в H:i"}}</span>
               </div>
             </a>
           </div>
@@ -128,7 +131,7 @@
               <span class="post-category text-white bg-success">Искусственный интеллект в медицине</span>
               <div class="text text-sm">
                 <h2>{{article_12.article_name}}</h2>
-                <span>{{article_12.article_date}}</span>
+                <span>{{article_12.article_date|date:"d.m.Y в H:i"}}</span>
               </div>
             </a>
 
@@ -137,14 +140,14 @@
                 <span class="post-category text-white bg-primary">Доказательная медицина</span>
                 <div class="text text-sm">
                   <h2>{{article_13.article_name}}</h2>
-                  <span>{{article_13.article_date}}</span>
+                  <span>{{article_13.article_date|date:"d.m.Y в H:i"}}</span>
                 </div>
               </a>
               <a href="{% url 'articles:article' id=article_14.id %}" class="hentry v-height img-2 ml-auto gradient" style="background: url({{ article_14.article_img.url }} ) no-repeat; background-size: contain;">
                 <span class="post-category text-white bg-warning">Визуализация</span>
                 <div class="text text-sm">
                   <h2>{{article_14.article_name}}</h2>
-                  <span>{{article_14.article_date}}</span>
+                  <span>{{article_14.article_date|date:"d.m.Y в H:i"}}</span>
                 </div>
               </a>
             </div>

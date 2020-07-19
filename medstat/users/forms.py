@@ -14,11 +14,6 @@ class CustomUserChangeForm(UserChangeForm):
         model = ArticlesUser
         fields = ('is_subscribed',)
 
-# class MyUserAdmin(UserAdmin):
-#     form = CustomUserChangeForm
-#     fieldsets = UserAdmin.fieldsets + (
-#             (None, {'fields': ('is_subscribed',)}),
-#     )
 
 # class EmailForm(forms.ModelForm):
 #     class Meta:

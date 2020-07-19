@@ -20,9 +20,9 @@
             <div class="text-left">
                 <h5>Тема запроса: {{object.subscribe_request_subject}}</h5>
                     <p>e-mail: {{ object.subscribe_request_name.email }}</p>
-                    <p>Заропс: {{ object.subscribe_request_text }}</p>
-                    <p>Тип запроса: {{ object.subscribe_request_type }}</p>
-                <p></p>Вы уверены, что хотите удалить данный запрос?<p></p>
+                    <p>Запрос: {{ object.subscribe_request_text }}</p>
+                    <p>Тип запроса: {{ object.subscribe_request_type }}</p><br>
+                    <h6>Вы уверены, что хотите удалить данный запрос?</h6>
                 <form method="post">
                     {% csrf_token %}
                     <button class="btn btn-danger" type="submit">Да</button>

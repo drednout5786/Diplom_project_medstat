@@ -71,7 +71,9 @@
             <nav class="site-navigation" role="navigation">
               <ul class="site-menu js-clone-nav mr-auto d-none d-sm-block">
                 <li> <a href="{% url 'home' %}">На главную</a></li>
+
                 <li><a href="{% url 'articles:index' %}">Статьи</a></li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                       aria-expanded="false">Услуги<span class="caret"></span></a>
@@ -88,6 +90,7 @@
                       {% endif %}
                     </ul>
                 </li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                       aria-expanded="false">Поиск по ключевым темам<span class="caret"></span></a>
@@ -101,10 +104,26 @@
                       <li><a href="{% url 'articles:tag_articles' id=10 %}">Визуализация</a></li>
                     </ul>
                 </li>
+
                 {% if user.is_superuser %}
-                <li><a href="{% url 'articles:tag_list' %}">Все тэги</a></li>
-                <li><a href="{% url 'articles:request_list' %}">Запросы</a></li>
+                    <li><a href="{% url 'articles:tag_list' %}">Все тэги</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                          aria-expanded="false">Запросы<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="{% url 'articles:request_list' %}">Все</a></li>
+                          <li><a href="{% url 'articles:request_list_SP' %}">Статобработка</a></li>
+                          <li><a href="{% url 'articles:request_list_CO' %}">Консультация</a></li>
+                          <li><a href="{% url 'articles:request_list_QS' %}">Вопрос</a></li>
+                          <li><a href="{% url 'articles:request_list_RV' %}">Рецензия</a></li>
+                          <li><a href="#">По Пользователям</a></li>
+                        </ul>
+                    </li>
                 {% endif %}
+                {% if user.is_authenticated and not user.is_superuser%}
+                    <li><a href="#">Мои запросы</a></li>
+                {% endif %}
+
                 {% if user.is_authenticated %}
                     <p class="navbar-text">Вы вошли как {{user.username}}</p> |
                     <li><a href="{% url 'users:logout' %}">Выход</a></li>
@@ -117,6 +136,17 @@
             <a href="#" class="site-menu-toggle js-menu-toggle text-black d-inline-block d-lg-none"><span class="icon-menu h3"></span></a></div>
           </div>
       </div>
+<!--        {% if messages %}-->
+<!--            <ul class="messages">-->
+<!--                {% for message in messages %}-->
+<!--                    <li class="{{ message.tags }}">-->
+<!--                        {{ message|safe }}-->
+<!--                        <a href="#" class="close">✖</a>-->
+<!--                    </li>-->
+<!--                {% endfor %}-->
+<!--            </ul>-->
+<!--        {% endif %}-->
+
     </header>
 {% block content %} {% endblock %}
 <!---------------------------Футер---------------------------------------------------------------------------------->

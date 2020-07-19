@@ -15,7 +15,7 @@
                     {% endfor %}
                     <h2 class="mb-4"><a href="{% url 'articles:article' id=article.id %}">{{article.article_name}}</a></h2>
                         <div class="post-meta align-items-center text-center">
-                            <span>&nbsp;-&nbsp; {{article.article_date}} &nbsp;-&nbsp;</span>
+                            <span>&nbsp;-&nbsp; {{article.article_date|date:"d.m.Y в H:i"}} &nbsp;-&nbsp;</span>
                         </div>
                 </div>
             </div>
@@ -32,11 +32,23 @@
                 {{article.article_text|linebreaksbr}}
             </div>
             <div class="pt-5">
-              <p>Тэги:
-                {% for tag in tags_article_all.all%}
-                <a href="{% url 'articles:tag_articles' id=tag.id %}"><span class="post-category text-white bg-primary mb-3">{{tag.tag_name}} ({{tag.art_number}})</span></a>
-                {% endfor %}
-              </p>
+                <p>Тэги:
+                    {% for tag in tags_article_all.all%}
+                    <a href="{% url 'articles:tag_articles' id=tag.id %}"><span class="post-category text-white bg-primary mb-3">{{tag.tag_name}} ({{tag.art_number}})</span></a>
+                    {% endfor %}
+                </p>
+                <br>
+                <h4>Задать вопрос по статье можно здесь:</h4>
+                <a href="{% url 'articles:request_question' %}"><span class="post-category text-white bg-success mb-3">Задать вопрос</span></a>
+                <h4>Заказать услугу можно здесь:</h4>
+                <a href="{% url 'articles:request_service' %}"><span class="post-category text-white bg-success mb-3">Заказать статобработку</span></a>
+                <a href="{% url 'articles:request_consultation' %}"><span class="post-category text-white bg-success mb-3">Заказать консультацию</span></a>
+                <a href="{% url 'articles:request_review' %}"><span class="post-category text-white bg-success mb-3">Заказать рецензию</span></a>
+                {% if user.is_authenticated %}
+                  <a href="{% url 'users:subscribe' pk=user.pk %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+                {% else %}
+                  <a href="{% url 'users:register' %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+                {% endif %}
             </div>
           </div>
 <!------------------------------------------------------------------------------------------------------------------->

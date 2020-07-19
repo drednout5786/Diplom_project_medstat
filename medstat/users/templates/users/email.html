@@ -15,13 +15,9 @@
     <div class="site-section bg-white">
       <div class="container">
         <div class="row align-items-stretch retro-layout-2">
-            <form method="post">
-                {%csrf_token%}
-                {{form.as_p}}
-                <button type="submit">Войти</button>
-                <br>
-                <sub style="text-align: left;"><a href="{% url 'users:register' %}" style="text-decoration: none; color: blue; padding:0%; cursor:pointer; margin-right:0%;">Если у Вас нет учетной записи, загистрируйтесь!</a></sub>
-            <form>
+            Thank you to registration!
+            Hi {{ user.username }},
+            we have received your details and will process soon.
         </div>
       </div>
     </div>

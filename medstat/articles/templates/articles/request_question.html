@@ -13,55 +13,23 @@
       </div>
     </div>
 <!------------------------------------------------------------------------------------------------------------------->
-    <div class="site-section bg-lightx">
-      <div class="container">
-          <div class="text">
-          <h3>Задание вопроса включает в себя:</h3>
-          <p>- Отправка вопроса по использованию конкретного критерия, вариантов расчетов Ваших данных;</p>
-          <p>- Получение бесплатного ответа.</p>
-          </div>
-      </div>
-    </div>
-<!------------------------------------------------------------------------------------------------------------------->
-    <div class="site-section bg-light">
-      <div class="container">
-          <div class="text">
-              <h3>Почему важно, начиная исследование, проконсультироваться у профессионалов в области статистики?</h3>
-              <p>1. Очень частая жалоба врачей, что пришлось перебивать базу несколько раз. А это огромные временные затраты.
-                  Порой приходится даже заново поднимать медицинские карты пациентов.</p>
-              <p>2. Важно закодировать данные так, чтобы они были удобны для расчетов конкретных статистики и критериев.
-                  Иногда достаточно ввести просто код - меньше/норма/выше нормы, а иногда важно внести именно само значение
-                  измеряемого параметра. Наибольшие сложности возникают при кодировании нескольких измерений за период наблюдения.</p>
-              <p>3. Правильное кодирование данных сохранит много времени и сил! Которые можно использовать для подробного
-                  анализа данных.</p>
-          </div>
-          <div class="pt-5">
-            <a href="{% url 'articles:tag_articles' id=9 %}"><span class="post-category text-white bg-primary mb-3">консультант по статистике</span></a>
-            <a href="{% url 'articles:tag_articles' id=2 %}"><span class="post-category text-white bg-primary mb-3">рецензия статистика</span></a>
-            <a href="{% url 'articles:tag_articles' id=1 %}"><span class="post-category text-white bg-primary mb-3">доказательная медицина</span></a>
-          </div>
-      </div>
-    </div>
-<!------------------------------------------------------------------------------------------------------------------->
     <div class="site-section bg-white">
       <div class="container">
-        <h3>Задать вопрос</h3>
-        <p>Опишите кратко суть Вашего вопроса и мы Вам ответим.</p>
-            <div class="col-md-12 col-lg-10">
-                <p>Вы вошли как {{ user.username }}.</p>
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {% for field in form %}
-                    <p>{{field.label_tag}}</p>
-                    <hr>
-                    {% for error in field.errors %}
-                        {{error}}
-                    {% endfor %}
-                    <p>{{field}}</p>
-                    {% endfor %}
-                    <button type="submit" class="btn btn btn-success">Задать вопрос</button>
-                </form>
-                <div class="pt-5">
+        <div class="col-md-12 col-lg-10">
+            <p>Вы вошли как {{ user.username }}.</p>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                <p>{{field.label_tag}}</p>
+                <hr>
+                {% for error in field.errors %}
+                    {{error}}
+                {% endfor %}
+                <p>{{field}}</p>
+                {% endfor %}
+                <button type="submit" class="btn btn btn-success">Задать вопрос</button>
+            </form>
+            <div class="pt-5">
                 <p>Если Вы хотите заказать статобработку, консультацию или рецензию, то Вы можете это сделать здесь:</p>
                 <a href="{% url 'articles:request_service' %}"><span class="post-category text-white bg-success mb-3">Заказать статобработку</span></a>
                 <a href="{% url 'articles:request_consultation' %}"><span class="post-category text-white bg-success mb-3">Заказать консультацию</span></a>
@@ -72,7 +40,7 @@
                   <a href="{% url 'users:register' %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
                 {% endif %}
             </div>
-            </div>
+        </div>
       </div>
     </div>
 {% endblock %}
