@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
+    'rest_framework',
 ]
 # Социальные сети
 # https://evileg.com/ru/post/11/
@@ -51,6 +53,8 @@ INSTALLED_APPS = [
 # PostgreSQL...
 
 MIDDLEWARE = [
+    # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+    'debug_toolbar.middleware.DebugToolbarMiddleware',  # Должен быть первым, чтобы полностью замерять используемое время, память и т.д.
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',  # Управление сессиями между запросами
     'django.middleware.common.CommonMiddleware',
@@ -108,6 +112,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Инсталяция https://www.django-rest-framework.org/#installation
+# Другие приложения https://djangopackages.org/grids/g/django-rest-framework/
+# Чтобы незарегистрированные пользователи могли пользоваться API
+# REST_FRAMEWORK = {
+#     # Use Django's standard `django.contrib.auth` permissions,
+#     # or allow read-only access for unauthenticated users.
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+#     ]
+# }
+# Пагинация страниц API
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -126,10 +145,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATICFILES_DIRS = [
-    'medstat/articles/static',
-]
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATICFILES_DIRS = [
+#     'medstat/articles/static',
+# ]
 
 # определение места хранения фотографий
 MEDIA_URL = '/media/'
@@ -156,6 +175,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_USE_TLS = True
 # EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'elenaschepkina@gmail.com'
-# EMAIL_HOST_PASSWORD = 'antohska'
+# EMAIL_HOST_USER = 'test@test.com'
+# EMAIL_HOST_PASSWORD = 'test'
 # EMAIL_PORT = 587
+
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]

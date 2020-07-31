@@ -19,7 +19,6 @@ from articles import views
 
 app_name = 'articles'
 urlpatterns = [
-    path('', views.main_page, name='index'),
     path('<int:id>/', views.article_description, name='article'),
     path('add/', views.article_add, name='article_add'),
     path('article-update/<int:pk>/', views.ArticleUpdateView.as_view(), name='article_update'),
@@ -45,6 +44,7 @@ urlpatterns = [
     path('requests_RV/', views.ReqListView_RV.as_view(), name='request_list_RV'),
     path('request-update/<int:pk>/', views.ReqUpdateView.as_view(), name='request_update'),
     path('request-delete/<int:pk>/', views.ReqDeleteView.as_view(), name='request_delete'),
+
 ]
 
 

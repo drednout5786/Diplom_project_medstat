@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Tag, Article, Subscriber_request, PageHit
+from .models import Tag, Article, SubscriberRequest, PageHit
 
 
 
@@ -25,7 +25,7 @@ class TagAdmin(admin.ModelAdmin):
     search_fields = ('tag_name',)
 
 
-class Subscriber_request_Admin(admin.ModelAdmin):
+class SubscriberRequestAdmin(admin.ModelAdmin):
     list_display = ['subscribe_request_name', 'subscribe_request_type', 'subscribe_request_subject',
                     'subscribe_request_text', 'subscribe_request_date', 'is_active']
     actions = [set_active, set_disactive]
@@ -39,7 +39,7 @@ class PageHitAdmin(admin.ModelAdmin):
 
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Tag, TagAdmin)
-admin.site.register(Subscriber_request, Subscriber_request_Admin)
+admin.site.register(SubscriberRequest, SubscriberRequestAdmin)
 admin.site.register(PageHit, PageHitAdmin)
 
 # admin.site.register(Tag)

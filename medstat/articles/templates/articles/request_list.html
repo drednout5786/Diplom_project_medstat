@@ -1,4 +1,5 @@
 {% extends "articles/base.html" %}
+{% load cache %}
 
 {% block title %}Список запросов{% endblock %}
 
@@ -24,6 +25,7 @@
                 {% if reqs.count > 0 %}
                 <table rules=all frame=box>
                     <thead align="center"><th>Id</th><th>E-mail</th><th>Тип запроса</th><th>Тема запроса</th><th>Текст</th><th>Дата</th><th>Статус</th><th>Действия</th></thead>
+                    {% cache 500 top_reqs %}
                     {% for req in reqs %}
                     <tr>
                         <td>{{ req.id }}</td>
@@ -40,6 +42,7 @@
                         <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                     </tr>
                     {% endfor %}
+                    {% endcache %}
                 </table>
                 {% endif %}
                 <br>

@@ -1,5 +1,6 @@
 {% extends "articles/base.html" %}
-{% load my_pattern %}
+<!--{% load my_pattern %}-->
+{% load cache %}
 
 {% block title %}Все статьи{% endblock %}
 
@@ -11,8 +12,6 @@
             <span>Раздел: Статьи</span>
             <h3>Все статьи</h3>
             <p>Наиболее интересные статьи собраны здесь!</p>
-            <p>{{info_1|upper}} {{info_2|capfirst}}</p>
-            <p>{{info_1|my_upper}} {{info_2|my_delete}}</p>
           </div>
         </div>
       </div>
@@ -36,6 +35,7 @@
           </span>
         </div>
         <div class="row">
+          {% cache 500 cache_articles_all %}
           {% for article in articles %}
               <div class="col-lg-4 mb-4">
                 <div class="entry2">
@@ -52,6 +52,7 @@
           {% empty %}
             <p>Список статей пуст. В данный момент мы ничего не можем показать. Зайдите позже или обратитесь к администратору сайта.</p>
           {% endfor %}
+          {% endcache %}
         </div>
         <div class="pagination">
           <span class="step-links">

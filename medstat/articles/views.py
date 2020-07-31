@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.http import HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Article, Tag, Subscriber_request
+from .models import Article, Tag, SubscriberRequest
 from users.models import ArticlesUser
 from .forms import ArticleForm
 from .forms import RequestForm
@@ -14,50 +14,39 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.decorators import method_decorator
 from .decorators import counted
 from django.http import Http404
+from django.db.models.query import Prefetch
 
 # Create your views (представление) here.
 
-@counted
-def main_page(request):
-    art_all = Article.active_objects.all().order_by('?')
-    # art_all = Article.objects.filter(is_active=True)
-    # art_all = Article.objects.all().order_by('?')  # Статьи вперемешку
-
-    paginator = Paginator(art_all, 9) # Show 9 articles per page
-    page = request.GET.get('page')
-    try:
-        articles = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        articles = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        articles = paginator.page(paginator.num_pages)
-    some_info_1 = 'удалить!!!'
-    some_info_2 = 'тестирование шаблонных тэгов'
-    return render(request, 'articles/category.html', {'articles': articles, 'info_1': some_info_1, 'info_2': some_info_2})
-
+# prefetch_related
+# https://smyt.ru/blog/django-orm/
+# https://dizballanze.com/ru/django-project-optimization-part-2/
 
 @login_required
 @counted
 def article_description(request, id):
-    art_one = get_object_or_404(Article, id=id)
-    # tags_article_all = Article.active_objects.get(id=id).article_tag.all()
-    tags_article_all = Article.active_objects.get(id=id).article_tag.filter(is_active=True)
-    tags_all = Tag.active_objects.all()
-    article_11 = get_object_or_404(Article, id=14)
-    article_12 = get_object_or_404(Article, id=20)
-    article_13 = get_object_or_404(Article, id=5)
-    article_14 = get_object_or_404(Article, id=12)
+
+    art_all = Article.active_objects.defer('article_text', 'article_text_short').all()
+    art_list = [id, 14, 20, 5, 12]
+    art_context = []
+    for art_i in art_list:
+        for art_ in art_all:
+            if art_.id == art_i:
+                art_context.append(art_)
+                break
+
+    tags_article_all = Article.active_objects.get(id=id).article_tag.all()
+
     context = {
-        'article': art_one,
+        'article': art_context[0],
+        'tags_all': Tag.active_objects.all(),
         'tags_article_all': tags_article_all,
-        'tags_all': tags_all,
-        'article_11': article_11,
-        'article_12': article_12,
-        'article_13': article_13,
-        'article_14': article_14,
+        'article_11': art_context[1],
+        'article_12': art_context[2],
+        'article_13': art_context[3],
+        'article_14': art_context[4],
     }
+
     return render(request, 'articles/single.html', context)
 
 @counted
@@ -66,11 +55,13 @@ def tag_articles(request, id):
     # получаем все статьи, которые имеют тэг tag_one
     # articles_all = Article.objects.filter(article_tag__tag_name=tag_one)
     articles_all = Article.active_objects.filter(article_tag=tag_one)
+    # articles_all = Article.active_objects.filter(article_tag__id=id)
     tags_all = Tag.active_objects.all()
     context = {
         'tag': tag_one,
         'articles_all': articles_all,
         'tags_all': tags_all,
+        'articles_count': articles_all.count()
     }
     return render(request, 'articles/tag_articles.html', context)
 
@@ -99,15 +90,20 @@ def article_add(request):
 
 @counted
 def service(request):
-    article_11 = get_object_or_404(Article, id=14)
-    article_12 = get_object_or_404(Article, id=20)
-    article_13 = get_object_or_404(Article, id=5)
-    article_14 = get_object_or_404(Article, id=12)
+    art_all = Article.active_objects.defer('article_text', 'article_text_short').all()
+    art_list = [14, 20, 5, 12]
+    art_context = []
+    for art_i in art_list:
+        for art_ in art_all:
+            if art_.id == art_i:
+                art_context.append(art_)
+                break
+
     context = {
-        'article_11': article_11,
-        'article_12': article_12,
-        'article_13': article_13,
-        'article_14': article_14,
+        'article_11': art_context[0],
+        'article_12': art_context[1],
+        'article_13': art_context[2],
+        'article_14': art_context[3],
     }
     return render(request, 'articles/service.html', context)
 
@@ -188,11 +184,6 @@ class PermissionMixin:
         return HttpResponseRedirect(reverse('users:login'))
 
 # Статьи ------------------------------------------------------
-class ArticleListView(PermissionMixin, UserPassesTestMixin, ListView):
-    model = Article
-    template_name = 'articles/article_list.html'
-    context_object_name = 'tags'
-
 class ArticleUpdateView(PermissionMixin, UserPassesTestMixin, UpdateView):
     model = Article
     fields = '__all__'
@@ -239,7 +230,7 @@ class TagDeleteView(PermissionMixin, UserPassesTestMixin, DeleteView):
 
 # Запросы ------------------------------------------------------
 class ReqListView(PermissionMixin, UserPassesTestMixin, ListView):
-    model = Subscriber_request
+    model = SubscriberRequest
     template_name = 'articles/request_list.html'
     context_object_name = 'reqs'
     paginate_by = 10
@@ -247,30 +238,30 @@ class ReqListView(PermissionMixin, UserPassesTestMixin, ListView):
     def get_queryset(self):
     # можно наложить условия на объекты
     #     return Tag.objects.filter(is_active=True)
-        return Subscriber_request.active_objects.filter()
+        return SubscriberRequest.active_objects.filter()
 
 class ReqUpdateView(PermissionMixin, UserPassesTestMixin, UpdateView):
-    model = Subscriber_request
+    model = SubscriberRequest
     fields = '__all__'
     template_name = 'articles/request_update.html'
     success_url = reverse_lazy('articles:request_list')
 
 class ReqDeleteView(PermissionMixin, UserPassesTestMixin, DeleteView):
     template_name = 'articles/request_delete.html'
-    model = Subscriber_request
+    model = SubscriberRequest
     success_url = reverse_lazy('articles:request_list')
 
 # -------------------------------------------------------------------
 class ReqListView_SP(PermissionMixin, UserPassesTestMixin, ListView):
-    model = Subscriber_request
+    model = SubscriberRequest
     template_name = 'articles/request_list_SP.html'
     context_object_name = 'reqs'
     paginate_by = 10
     def get_queryset(self):
-        return Subscriber_request.active_objects.filter(subscribe_request_type='SP')
+        return SubscriberRequest.active_objects.filter(subscribe_request_type='SP')
 
 class ReqUpdateView_SP(PermissionMixin, UserPassesTestMixin, UpdateView):
-    model = Subscriber_request
+    model = SubscriberRequest
     fields = '__all__'
     template_name = 'articles/request_update.html'
     success_url = reverse_lazy('articles:request_list_SP')
@@ -278,21 +269,21 @@ class ReqUpdateView_SP(PermissionMixin, UserPassesTestMixin, UpdateView):
 
 class ReqDeleteView_SP(PermissionMixin, UserPassesTestMixin, DeleteView):
     template_name = 'articles/request_delete.html'
-    model = Subscriber_request
+    model = SubscriberRequest
     success_url = reverse_lazy('articles:request_list_SP')
 
 # -------------------------------------------------------------------
 class ReqListView_CO(PermissionMixin, UserPassesTestMixin, ListView):
-    model = Subscriber_request
+    model = SubscriberRequest
     template_name = 'articles/request_list_CO.html'
     context_object_name = 'reqs'
     paginate_by = 10
 
     def get_queryset(self):
-        return Subscriber_request.active_objects.filter(subscribe_request_type='CO')
+        return SubscriberRequest.active_objects.filter(subscribe_request_type='CO')
 
 class ReqUpdateView_CO(PermissionMixin, UserPassesTestMixin, UpdateView):
-    model = Subscriber_request
+    model = SubscriberRequest
     fields = '__all__'
     template_name = 'articles/request_update.html'
     success_url = reverse_lazy('articles:request_list_CO')
@@ -300,22 +291,22 @@ class ReqUpdateView_CO(PermissionMixin, UserPassesTestMixin, UpdateView):
 
 class ReqDeleteView_CO(PermissionMixin, UserPassesTestMixin, DeleteView):
     template_name = 'articles/request_delete.html'
-    model = Subscriber_request
+    model = SubscriberRequest
     success_url = reverse_lazy('articles:request_list_CO')
 
 # -------------------------------------------------------------------
 class ReqListView_QS(PermissionMixin, UserPassesTestMixin, ListView):
-    model = Subscriber_request
+    model = SubscriberRequest
     template_name = 'articles/request_list_QS.html'
     context_object_name = 'reqs'
     paginate_by = 10
 
     def get_queryset(self):
-        return Subscriber_request.active_objects.filter(subscribe_request_type='QS')
+        return SubscriberRequest.active_objects.filter(subscribe_request_type='QS')
 
 
 class ReqUpdateView(PermissionMixin, UserPassesTestMixin, UpdateView):
-    model = Subscriber_request
+    model = SubscriberRequest
     fields = '__all__'
     template_name = 'articles/request_update.html'
     success_url = reverse_lazy('articles:request_list_QS')
@@ -323,38 +314,32 @@ class ReqUpdateView(PermissionMixin, UserPassesTestMixin, UpdateView):
 
 class ReqDeleteView(PermissionMixin, UserPassesTestMixin, DeleteView):
     template_name = 'articles/request_delete.html'
-    model = Subscriber_request
+    model = SubscriberRequest
     success_url = reverse_lazy('articles:request_list_QS')
 
 # -------------------------------------------------------------------
 #  Связываение запросов с моделью User: https://www.agiliq.com/blog/2017/12/when-and-how-use-django-listview/
 # -------------------------------------------------------------------
 class ReqListView_RV(PermissionMixin, UserPassesTestMixin, ListView):
-    model = Subscriber_request
+    model = SubscriberRequest
     template_name = 'articles/request_list_RV.html'
     context_object_name = 'reqs'
     paginate_by = 10
 
     def get_queryset(self):
-        return Subscriber_request.active_objects.filter(subscribe_request_type='RV')
+        return SubscriberRequest.active_objects.filter(subscribe_request_type='RV')
 
 class ReqUpdateView_RV(PermissionMixin, UserPassesTestMixin, UpdateView):
-    model = Subscriber_request
+    model = SubscriberRequest
     fields = '__all__'
     template_name = 'articles/request_update.html'
     success_url = reverse_lazy('articles:request_list_RV')
 
 class ReqDeleteView_RV(PermissionMixin, UserPassesTestMixin, DeleteView):
     template_name = 'articles/request_delete.html'
-    model = Subscriber_request
+    model = SubscriberRequest
     success_url = reverse_lazy('articles:request_list_RV')
 # -------------------------------------------------------------------
-#
-# class ReqDetailView(PermissionMixin, UserPassesTestMixin, DetailView):
-#     model = Subscriber_request
-#     template_name = 'articles/request_one.html'
-
-
 
 # Запрос по пользователям: https://ru.stackoverflow.com/questions/990082/Как-вывести-все-записи-пользователя-на-django
 

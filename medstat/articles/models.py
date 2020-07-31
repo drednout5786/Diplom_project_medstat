@@ -1,9 +1,8 @@
 from django.db import models
 from datetime import datetime
-from django.db import models
-from datetime import datetime
 import os
 from django.conf import settings
+# from django.utils.functional import cached_property
 from users.models import ArticlesUser  # импортируем из users
 
 from django.core.signals import request_finished
@@ -24,20 +23,31 @@ class IsActiveMixin(models.Model):
         abstract = True  # Чтобы не было изменеий в таблицах
 
 class Tag(IsActiveMixin, models.Model):
-    tag_name = models.CharField('название тэга', max_length=1000)
+    tag_name = models.CharField('название тэга', max_length=1000, db_index=True)
+    # db_index=True - введение индексации поля
 
+    class Meta:
+        verbose_name = 'тэг'
+        verbose_name_plural = 'тэги'
+
+    # cached_property предоставляет возможность кэшировать обращение к функции прямо в памяти процесса.
+    # Такой вид кэша возможен только для методов не принимающих никаких параметров кроме self.
+    # Такой кэш будет жить до тех пор пока существует соответствующий объект.
+    # @cached_property
     def art_number(self):
         art = Article.objects.filter(article_tag__tag_name=self.tag_name)
         return len(art)
 
-    def is_art_not_none(self):  # Есть ли у тега статьи
-        if len(Article.objects.filter(article_tag__tag_name=self.tag_name)) >= 1:
-            return True
-        return False
+    # def is_art_not_none(self):  # Есть ли у тега статьи
+    #     if len(Article.objects.filter(article_tag__tag_name=self.tag_name)) >= 1:
+    #         return True
+    #     return False
 
     def __str__(self):
-        # return f'{self.tag_name}'
-        return f'{self.tag_name}, количество статей по тэгу: {self.art_number()}, Есть ли у тега статьи: {self.is_art_not_none()}'
+        return f'{self.tag_name}'
+        # return f'{self.tag_name} ({self.art_number()})'
+        # return f'{self.tag_name}, количество статей по тэгу: {self.art_number()}'
+        # return f'{self.tag_name}, количество статей по тэгу: {self.art_number()}, Есть ли у тега статьи: {self.is_art_not_none()}'
 
 class Article(IsActiveMixin, models.Model):
     #, default = os.path.join(settings.MEDIA_ROOT,'articles','happy_lion.jpg')
@@ -51,27 +61,34 @@ class Article(IsActiveMixin, models.Model):
 
     class Meta:
         ordering = ('-article_date',)
+        verbose_name = 'статья'
+        verbose_name_plural = 'статьи'
 
-    def tag_number(self):  # Количество тегов на статью
-        return len(self.article_tag.all())
+    # @cached_property
+    def get_all_tags(self):
+        return Tag.active_objects.only('tag_name').all()
+        # return Tag.active_objects.all()  # only('tag_name')
 
-    def is_tag_one(self):  # Один ли тег у статьи
-        if len(self.article_tag.all()) == 1:
-            return True
-        return False
+    # def tag_number(self):  # Количество тегов на статью
+    #     return len(self.article_tag.all())
+    #
+    # def is_tag_one(self):  # Один ли тег у статьи
+    #     if len(self.article_tag.all()) == 1:
+    #         return True
+    #     return False
 
     def __str__(self):
-        # return f'{self.article_name}'
+        return f'{self.article_name}'
         # return f'{self.article_name}, опубликована: {self.article_date}'
-        # return f'{self.article_name}, опубликована: {self.article_date}'
-        return f'{self.article_name}, опубликована: {self.article_date}, количество тэгов: {self.tag_number()}, один ли тэг у статьи: {self.is_tag_one()}'
+        # return f'{self.article_name}, опубликована: {self.article_date}, количество тэгов: {self.tag_number()}}'
+        # return f'{self.article_name}, опубликована: {self.article_date}, количество тэгов: {self.tag_number()}, один ли тэг у статьи: {self.is_tag_one()}'
         # return f'{self.article_name}, опубликована: {self.article_date}, теги: {self.article_tag}'
         # return f'{self.article_name}, опубликована: {self.article_date}, теги: {self.article_tag}, статья: {self.article_text}'
         # с перечислением тэгов
         # return "%s (%s)" % (self.article_name, ", ".join(Tag.tag_name for Tag in self.article_tag.all()))
 
 #  https://stackoverflow.com/questions/26312219/operationalerror-no-such-column-django
-class Subscriber_request(IsActiveMixin, models.Model):
+class SubscriberRequest(IsActiveMixin, models.Model):
     STATPROCESSING = 'SP'
     CONSULTATION = 'CO'
     QUESTION = 'QS'
@@ -89,11 +106,10 @@ class Subscriber_request(IsActiveMixin, models.Model):
     subscribe_request_date = models.DateTimeField('Дата обращения', default=datetime.now())
     subscribe_request_status = models.BooleanField('Статус выполнения', default=False)
 
-    # def request_type_number(self):  # Количество тегов на статью
-    #     return len(self.subscribe_request_type.all(subscribe_request_type='SP'))
-
     class Meta:
         ordering = ('-subscribe_request_date',)
+        verbose_name = 'запрос на услугу'
+        verbose_name_plural = 'запросы на услуги'
 
     def __str__(self):
         return f'{self.subscribe_request_name}, ' \
@@ -110,11 +126,6 @@ class PageHit(IsActiveMixin, models.Model):
     class Meta:
         verbose_name = 'счётчик'
         verbose_name_plural = 'счётчики'
-
-    def article_url_len(self):  # Длина url статьи >0
-        if len(self.url) > 0:
-            return True
-        return False
 
     def __str__(self):
         return f'{self.url}, количество просмотров: {self.count}'

@@ -1,7 +1,7 @@
 from django import forms
 from .models import Tag
 from .models import Article
-from .models import Subscriber_request
+from .models import SubscriberRequest
 
 class ArticleForm(forms.ModelForm):
     article_tag = forms.ModelMultipleChoiceField(label='Тэги', queryset=Tag.objects.all(), widget=forms.CheckboxSelectMultiple())
@@ -13,7 +13,7 @@ class ArticleForm(forms.ModelForm):
 
 class RequestForm(forms.ModelForm):
     class Meta:
-        model = Subscriber_request  # Привязываем форму с конкретной моделью.
+        model = SubscriberRequest  # Привязываем форму с конкретной моделью.
         # fields = '__all__'
         fields = ('subscribe_request_subject', 'subscribe_request_text')
 

@@ -1,4 +1,5 @@
 {% extends "articles/base.html" %}
+{% load cache %}
 
 {% block title %}Medstat{% endblock %}
 
@@ -29,13 +30,13 @@
           </div>
 
           <div class="col-md-4">
-            <a href="{% url 'articles:article' id=article.id %}" class="h-entry img-5 h-100 gradient" style="background: url({{ article.article_img.url }} ) no-repeat; background-size: cover;">
+            <a href="{% url 'articles:article' id=article_3.id %}" class="h-entry img-5 h-100 gradient" style="background: url({{ article_3.article_img.url }} ) no-repeat; background-size: cover;">
               <div class="text">
                 <div class="post-categories mb-3">
                   <span class="post-category bg-danger">Интересные истории</span>
                 </div>
-                <h2>{{article.article_name}}</h2>
-                <span class="date">{{article.article_date|date:"d.m.Y в H:i"}}</span>
+                <h2>{{article_3.article_name}}</h2>
+                <span class="date">{{article_3.article_date|date:"d.m.Y в H:i"}}</span>
               </div>
             </a>
           </div>
@@ -71,6 +72,7 @@
           </div>
         </div>
         <div class="row">
+          {% cache 500 cache_articles_all %}
           {% for article in articles %}
           <div class="col-lg-4 mb-4">
             <div class="entry2">
@@ -89,6 +91,7 @@
           {% empty %}
             <p>Список статей пуст. В данный момент мы ничего не можем показать. Зайдите позже или обратитесь к администратору сайта.</p>
           {% endfor %}
+          {% endcache %}
         </div>
         <div class="pagination">
           <span class="step-links">
@@ -155,5 +158,20 @@
         </div>
       </div>
     </div>
+<!------------------------------------------------------------------------------------------------------------------->
+    {% if user.is_superuser %}
+    <div class="site-section bg-white">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-12">
+            <h3>Добавить новую статью</h3>
+          </div>
+        </div>
+        <div class="row align-items-stretch retro-layout">
+          <a href="{%url 'articles:article_add' %}" class="btn btn-primary">Добавить новую статью</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
 <!------------------------------------------------------------------------------------------------------------------->
 {% endblock %}
