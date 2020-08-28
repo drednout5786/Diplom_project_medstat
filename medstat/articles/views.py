@@ -22,7 +22,6 @@ from django.db.models.query import Prefetch
 # https://smyt.ru/blog/django-orm/
 # https://dizballanze.com/ru/django-project-optimization-part-2/
 
-@login_required
 @counted
 def article_description(request, id):
 
@@ -49,7 +48,7 @@ def article_description(request, id):
 
     return render(request, 'articles/single.html', context)
 
-@counted
+
 def tag_articles(request, id):
     tag_one = get_object_or_404(Tag, id=id)
     # получаем все статьи, которые имеют тэг tag_one
@@ -88,7 +87,7 @@ def article_add(request):
         else:
             return render(request, 'articles/article_add.html', {'form': form})
 
-@counted
+
 def service(request):
     art_all = Article.active_objects.defer('article_text', 'article_text_short').all()
     art_list = [14, 20, 5, 12]

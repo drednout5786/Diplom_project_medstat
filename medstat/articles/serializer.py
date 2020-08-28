@@ -25,16 +25,16 @@ class SubscriberRequestSerializer(serializers.HyperlinkedModelSerializer):
     # email = serializers.StringRelatedField(many=False)
     class Meta:
         model = SubscriberRequest
-        # exclude = ['subscribe_request_name']
-        fields = '__all__'
+        exclude = ['subscribe_request_name']
+        # fields = '__all__'
         # extra_kwargs = {
         #     'url': {'view_name': 'subscriberrequest-detail', 'lookup_field': 'pk'},
         # }
 
-class PageHitSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = PageHit
-        fields = '__all__'
+# class PageHitSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = PageHit
+#         fields = '__all__'
 
 class PageHitPopularSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

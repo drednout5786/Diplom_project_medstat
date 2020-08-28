@@ -20,17 +20,17 @@ from django.conf.urls.static import static  # прописываем ссылк�
 from django.conf.urls import url
 from medstat import views
 from rest_framework import routers
-from articles.api_views import TagViewSet, ArticleViewSet, SubscriberRequestViewSet, PageHitViewSet, PageHitPopularViewSet
-from users.api_views import ArticlesUserViewSet, InfofileViewSet
+from articles.api_views import TagViewSet, ArticleViewSet, SubscriberRequestViewSet, PageHitPopularViewSet  #, PageHitViewSet
+from users.api_views import InfofileViewSet  #, ArticlesUserViewSet
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register('tag', TagViewSet)
 router.register('article', ArticleViewSet)
 router.register('request', SubscriberRequestViewSet)
-router.register('pagehit', PageHitViewSet)
+# router.register('pagehit', PageHitViewSet)
 router.register('pagehit_popular', PageHitPopularViewSet)
-router.register('articles_user', ArticlesUserViewSet)
+# router.register('articles_user', ArticlesUserViewSet)
 router.register('infofile', InfofileViewSet)
 
 urlpatterns = [

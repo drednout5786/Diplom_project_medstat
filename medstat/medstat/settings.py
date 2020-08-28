@@ -46,6 +46,10 @@ INSTALLED_APPS = [
 # Социальные сети
 # https://evileg.com/ru/post/11/
 # https://evileg.com/ru/post/420/ FB
+# https://webdevblog.ru/django-autentifikaciya-s-facebook-instagram-i-linkedin/
+# https://developers.facebook.com/docs/facebook-login/web#logindialog.
+
+# https://fbgid.ru/faq/kak-sdelat-ssylku-na-stranitsu-v-fejsbuk
 
 # https://evileg.com/ru/post/367/ VK
 # pip install social-auth-app-django

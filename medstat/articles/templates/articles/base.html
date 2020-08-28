@@ -173,7 +173,12 @@
               {% endif %}
               <li><a href="#">Отзывы</a></li>
               <li><a href="#">Карта сайта</a></li>
+
+              {% if user.is_authenticated %}
               <li><a href="/api/v0/">API</a></li>
+              {% else %}
+              <li><a href="{% url 'users:login' %}">API</a></li>
+              {% endif %}
             </ul>
             <h3 class="footer-heading mb-4">Основные темы:</h3>
             <ul class="list-unstyled float-left">
@@ -188,7 +193,7 @@
             <div>
               <h3 class="footer-heading mb-4">Мы в сети:</h3>
               <p>
-                <a href="http://https://www.facebook.com/Techdepartament/"><span class="icon-facebook pt-2 pr-2 pb-2 pl-0">Facebook</span></a>
+                <a href="https://facebook.com/Techdepartament"><span class="icon-facebook pt-2 pr-2 pb-2 pl-0">Facebook</span></a>
                 <a href="#"><span class="icon-twitter p-2"></span></a>
                 <a href="#"><span class="icon-instagram p-2"></span></a>
                 <a href="#"><span class="icon-rss p-2"></span></a>
