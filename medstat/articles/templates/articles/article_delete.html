@@ -1,0 +1,32 @@
+{% extends "articles/base.html" %}
+
+{% block title %}Удаление статьи{% endblock %}
+
+{% block content %}
+    <div class="py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+              <span>Раздел: Работа со статьями</span>
+              <h3>Удаление статьи</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section bg-white">
+      <div class="container">
+        <div class="row align-items-stretch retro-layout-2">
+            <div class="text-center"><h5>{{object.article_name}}</h5>
+                <p></p>Вы уверены, что хотите удалить данную статью?<p></p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="container">
+                        <button class="btn btn-danger" type="submit">Да</button><p></p>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+    </div>
+{% endblock %}

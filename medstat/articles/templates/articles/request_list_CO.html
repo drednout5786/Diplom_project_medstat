@@ -1,0 +1,68 @@
+{% extends "articles/base.html" %}
+{% load cache %}
+
+{% block title %}Список запросов{% endblock %}
+
+{% block content %}
+
+    <div class="py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+              <span>Раздел: Работа с запросами</span>
+              <h3>Все запросы на консультацию</h3>
+              <p>Все запросы от пользователей собраны здесь!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section bg-white">
+      <div class="container">
+        <div class="row align-items-stretch retro-layout-2">
+            <div id="content" class="flex">
+                <h5>Выберите действия</h5>
+                {% if reqs.count > 0 %}
+                <table rules=all frame=box>
+                    <thead align="center"><th>Id</th><th>E-mail</th><th>Тип запроса</th><th>Тема запроса</th><th>Текст</th><th>Дата</th><th>Статус</th><th>Действия</th></thead>
+                    {% cache 500 top_reqs_co %}
+                    {% for req in reqs %}
+                    <tr>
+                        <td>{{ req.id }}</td>
+                        <td>{{ req.subscribe_request_name.email }}</td>
+                        <td>{{ req.subscribe_request_type }}</td>
+                        <td>{{ req.subscribe_request_subject }}</td>
+                        <td>{{ req.subscribe_request_text }}</td>
+                        <td>{{ req.subscribe_request_date|date:"d.m.Y в H:i" }}</td>
+                        <td>{{ req.subscribe_request_status }}</td>
+                        <td><a href="{% url 'articles:request_update' pk=req.pk %}">Изменить</a> | <a href="{% url 'articles:request_delete' pk=req.pk %}">Удалить</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    {% endfor %}
+                    {% endcache %}
+                </table>
+                {% endif %}
+                <br>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; первая</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">предыдущая</a>
+                        {% endif %}
+                        <span class="current">
+                            страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                        </span>
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">следующая</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">последняя &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- meta предназначен для корректного отображения разрабатываемой страницы на мобильных устройствах. -->
+
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700|Playfair+Display:400,700,900" rel="stylesheet">
+{% load static %}
+    <link rel="stylesheet" href="{% static "articles/style.css" %}">
+    <link rel="stylesheet" href="{% static "articles/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "articles/magnific-popup.css" %}">
+    <link rel="stylesheet" href="{% static "articles/jquery-ui.css" %}">
+    <link rel="stylesheet" href="{% static "articles/owl.carousel.min.css" %}">
+    <link rel="stylesheet" href="{% static "articles/owl.theme.default.min.css" %}">
+    <link rel="stylesheet" href="{% static "articles/bootstrap-datepicker.css"articles/>
+    <link rel="stylesheet" href="{% static "articles/laticon.css" articles/>
+    <link rel="stylesheet" href="{% static "articles/aos.css" %}">
+    <link rel="stylesheet" href="{% static "articles/style.css" %}">
+
+    <script src="{% static 'articles/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'articles/jquery-migrate-3.0.1.min.js' %}"></script>
+    <script src="{% static 'articles/jquery-ui.js' %}"></script>
+    <script src="{% static 'articles/popper.min.js' %}"></script>
+    <script src="{% static 'articles/bootstrap.min.js' %}"></script>
+    <script src="{% static 'articles/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'articles/jquery.stellar.min.js' %}"></script>
+    <script src="{% static 'articles/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'articles/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'articles/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static 'articles/aos.js' %}"></script>
+    <script src="{% static 'articles/main.js' %}"></script>
+    <script src="{% static 'articles/readmore.min.js' %}"></script>
+    <style>
+    </style>
+
+  </head>
+  <body>
+
+  <div class="site-wrap">
+
+    <div class="site-mobile-menu">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+
+    <header class="site-navbar" role="banner">
+      <div class="container-fluid">
+        <div class="row align-items-center">
+
+          <div class="col-12 search-form-wrap js-search-form">
+            <form method="get" action="#">
+              <input type="text" id="s" class="form-control" placeholder="Search...">
+              <button class="search-btn" type="submit"><span class="icon-search"></span></button>
+            </form>
+          </div>
+
+          <div class="col-4 site-logo">
+            <a href="{% url 'home' %}" class="text-black h2 mb-0">Медстатистика</a>
+            <!-- логотип будет позже  https://itchief.ru/lessons/bootstrap-3/38-bootstrap-3-navigation-menu-->
+<!--              <a class="navbar-brand" href="{% url 'home' %}"><img src="navbar-brand.svg" height="36" alt="Image"></a>-->
+          </div>
+
+          <div class="col-8 text-right">
+            <nav class="site-navigation" role="navigation">
+              <ul class="site-menu js-clone-nav mr-auto d-none d-sm-block">
+                <li> <a href="{% url 'home' %}">На главную</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                      aria-expanded="false">Услуги<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url 'articles:service' %}">Все услуги</a></li>
+                      <li><a href="{% url 'articles:request_service' %}">Статобработка</a></li>
+                      <li><a href="{% url 'articles:request_consultation' %}">Консультация</a></li>
+                      <li><a href="{% url 'articles:request_review' %}">Рецензия</a></li>
+                      <li><a href="{% url 'articles:request_question' %}">Задать вопрос</a></li>
+                      {% if user.is_authenticated %}
+                      <li><a href="{% url 'users:subscribe' pk=user.pk %}">Подписка на новости</a></li>
+                      {% else %}
+                      <li><a href="{% url 'users:register' %}">Подписка на новости</a></li>
+                      {% endif %}
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                      aria-expanded="false">Поиск по ключевым темам<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url 'articles:tag_articles' id=1 %}">Доказательная медицина</a></li>
+                      <li><a href="{% url 'articles:tag_articles' id=4 %}">Статистика для медиков</a></li>
+                      <li><a href="{% url 'articles:tag_articles' id=2 %}">Рецензия статистика</a></li>
+                      <li><a href="{% url 'articles:tag_articles' id=9 %}">Консультант по статистике</a></li>
+                      <li><a href="{% url 'articles:tag_articles' id=7 %}">Методы</a></li>
+                      <li><a href="{% url 'articles:tag_articles' id=8 %}">Искусственный интеллект</a></li>
+                      <li><a href="{% url 'articles:tag_articles' id=10 %}">Визуализация</a></li>
+                    </ul>
+                </li>
+
+                {% if user.is_superuser %}
+                    <li><a href="{% url 'articles:tag_list' %}">Все тэги</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                          aria-expanded="false">Запросы<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="{% url 'articles:request_list' %}">Все</a></li>
+                          <li><a href="{% url 'articles:request_list_SP' %}">Статобработка</a></li>
+                          <li><a href="{% url 'articles:request_list_CO' %}">Консультация</a></li>
+                          <li><a href="{% url 'articles:request_list_QS' %}">Вопрос</a></li>
+                          <li><a href="{% url 'articles:request_list_RV' %}">Рецензия</a></li>
+                          <li><a href="#">По Пользователям</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if user.is_authenticated and not user.is_superuser%}
+                    <li><a href="#">Мои запросы</a></li>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                    <p class="navbar-text">Вы вошли как {{user.username}}</p> |
+                    <li><a href="{% url 'users:logout' %}">Выход</a></li>
+                {% else %}
+                    <li><a href="{% url 'users:login' %}">Войти</a></li> |
+                    <li><a href="{% url 'users:register' %}">Регистрация</a></li>
+                {% endif %}
+              </ul>
+            </nav>
+            <a href="#" class="site-menu-toggle js-menu-toggle text-black d-inline-block d-lg-none"><span class="icon-menu h3"></span></a></div>
+          </div>
+      </div>
+<!--        {% if messages %}-->
+<!--            <ul class="messages">-->
+<!--                {% for message in messages %}-->
+<!--                    <li class="{{ message.tags }}">-->
+<!--                        {{ message|safe }}-->
+<!--                        <a href="#" class="close">✖</a>-->
+<!--                    </li>-->
+<!--                {% endfor %}-->
+<!--            </ul>-->
+<!--        {% endif %}-->
+
+    </header>
+{% block content %} {% endblock %}
+<!---------------------------Футер---------------------------------------------------------------------------------->
+    <div class="site-footer">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md-4">
+            <h3 class="footer-heading mb-4">О компании</h3>
+            <p>ООО Техдепартамент, статистика для медицины</p>
+            <p>Компания выполняет работы по статистическому анализу экспериментальных данных уже более 20 лет.</p>
+            <p>Имеем обширный опыт как в помощи написания диссертации, так и рецензирования/написания научных статей.</p>
+            <p>Мы, профессионалы математики и статистики, помогаем практикующим врачам, аспирантам/докторантам, пишущим
+              диссертацию, и желающим правильно посчитать, оформить расчеты и сделать точное описание и интерпретацию к ним.</p>
+            <p>Цель портала - помочь и дать советы по написанию кандидатской/докторской диссертации или научной статьи в
+              ВАКовский журнал по медицине, в части статистических расчетов и правильного оформления проведенных исследований.</p>
+          </div>
+          <div class="col-md-3 ml-auto">
+            <!-- <h3 class="footer-heading mb-4">Navigation</h3> -->
+            <ul class="list-unstyled float-left mr-5">
+              <li><a href="{% url 'articles:service' %}">Услуги</a></li>
+              <li><a href="{% url 'articles:request_service' %}">Заказать статобработку</a></li>
+              {% if user.is_authenticated %}
+              <li><a href="{% url 'users:subscribe' pk=user.pk %}">Подписка на новости</a></li>
+              {% else %}
+              <li><a href="{% url 'users:register' %}">Подписка на новости</a></li>
+              {% endif %}
+              <li><a href="#">Отзывы</a></li>
+              <li><a href="#">Карта сайта</a></li>
+
+              {% if user.is_authenticated %}
+              <li><a href="/api/v0/">API</a></li>
+              {% else %}
+              <li><a href="{% url 'users:login' %}">API</a></li>
+              {% endif %}
+            </ul>
+            <h3 class="footer-heading mb-4">Основные темы:</h3>
+            <ul class="list-unstyled float-left">
+              <li><a href="{% url 'articles:tag_articles' id=1 %}">Доказательная медицина</a></li>
+              <li><a href="{% url 'articles:tag_articles' id=2 %}">Рецензия статистика</a></li>
+              <li><a href="{% url 'articles:tag_articles' id=7 %}">Методы</a></li>
+              <li><a href="{% url 'articles:tag_articles' id=11 %}">Математики улыбаются</a></li>
+            </ul>
+          </div>
+
+          <div class="col-md-4">
+            <div>
+              <h3 class="footer-heading mb-4">Мы в сети:</h3>
+              <p>
+                <a href="https://facebook.com/Techdepartament"><span class="icon-facebook pt-2 pr-2 pb-2 pl-0">Facebook</span></a>
+                <a href="#"><span class="icon-twitter p-2"></span></a>
+                <a href="#"><span class="icon-instagram p-2"></span></a>
+                <a href="#"><span class="icon-rss p-2"></span></a>
+                <a href="#"><span class="icon-envelope p-2"></span></a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 text-center">
+            <p>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </body>
+</html>

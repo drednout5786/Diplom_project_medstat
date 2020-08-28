@@ -1,0 +1,31 @@
+{% extends "articles/base.html" %}
+
+{% block title %}{{tag.tag_name}}{% endblock %}
+
+{% block content %}
+
+    <div class="py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+              <span>Раздел: Работа с тэгами</span>
+              <h3>Редактирование тэга</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section bg-white">
+      <div class="container">
+          <div class="row align-items-stretch retro-layout-2">
+            <div class="text-center">
+                <h5>{{tag.tag_name}}</h5><p></p>
+                <div class="container">
+                    <div class="text-center"><a href = "{%url 'articles:tag_update' pk=tag.pk %}" class="btn btn-warning">Изменить</a></div><p></p>
+                    <div class="text-center"><a href = "{%url 'articles:tag_delete' pk=tag.pk %}" class="btn btn-danger">Удалить</a></div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

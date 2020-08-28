@@ -1,0 +1,24 @@
+{% extends "articles/base.html" %}
+
+{% block content %}
+    <div class="site-section bg-light">
+      <div class="container">
+          <div class="row">
+          <div class="col-md-12">
+            <span>Раздел: Вход на сайт</span>
+            <h3>Войдите или зарегистрируйтесь</h3>
+            <p>Введите имя и пароль или зарегистрируйтесь</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="site-section bg-white">
+      <div class="container">
+        <div class="row align-items-stretch retro-layout-2">
+            Thank you to registration!
+            Hi {{ user.username }},
+            we have received your details and will process soon.
+        </div>
+      </div>
+    </div>
+{% endblock content %}

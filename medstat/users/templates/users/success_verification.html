@@ -1,0 +1,21 @@
+{% extends "articles/base.html" %}
+
+{% block content %}
+    <div class="site-section bg-light">
+      <div class="container">
+          <div class="row">
+          <div class="col-md-12">
+            <span>Раздел: Вход на сайт</span>
+            <h3>Верификация почты успешно завершена.</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="site-section bg-white">
+      <div class="container">
+          <p>Приветствуем Вас, {{ user.username }}! </p>
+          <p>Спасибо за регистрацию!</p>
+          <p>Теперь Вы можете пользоваться всеми возможностями сайта.</p>
+      </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "articles/base.html" %}
+<!--{% load my_pattern %}-->
+{% load cache %}
+
+{% block title %}Все статьи{% endblock %}
+
+{% block content %}
+    <div class="py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <span>Раздел: Статьи</span>
+            <h3>Все статьи</h3>
+            <p>Наиболее интересные статьи собраны здесь!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+<!------------------------------------------------------------------------------------------------------------------->
+    <div class="site-section bg-white">
+      <div class="container">
+        <div class="pagination">
+          <span class="step-links">
+              {% if articles.has_previous %}
+                <a href="?page=1">&laquo; первая</a>
+                <a href="?page={{ articles.previous_page_number }}">предыдущая</a>
+              {% endif %}
+              <span class="current">
+                Страница {{ articles.number }} из {{ articles.paginator.num_pages }}.
+              </span>
+              {% if articles.has_next %}
+                <a href="?page={{ articles.next_page_number }}">следующая</a>
+                <a href="?page={{ articles.paginator.num_pages }}">последняя &raquo;</a>
+              {% endif %}
+          </span>
+        </div>
+        <div class="row">
+          {% cache 500 cache_articles_all %}
+          {% for article in articles %}
+              <div class="col-lg-4 mb-4">
+                <div class="entry2">
+                  <a href="{% url 'articles:article' id=article.id %}">
+                    <img src="{{article.article_img.url}}" alt="Image" class="img-fluid rounded"></a>
+                  <div class="excerpt">
+                    <h2><a href="{% url 'articles:article' id=article.id %}">{{article.article_name}}</a></h2>
+                    <div class="post-meta align-items-center text-left clearfix">
+                      <span>&nbsp;-&nbsp; {{article.article_date|date:"d.m.Y в H:i"}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          {% empty %}
+            <p>Список статей пуст. В данный момент мы ничего не можем показать. Зайдите позже или обратитесь к администратору сайта.</p>
+          {% endfor %}
+          {% endcache %}
+        </div>
+        <div class="pagination">
+          <span class="step-links">
+              {% if articles.has_previous %}
+                <a href="?page=1">&laquo; первая</a>
+                <a href="?page={{ articles.previous_page_number }}">&larr;предыдущая</a>
+              {% endif %}
+              <span class="current">
+                Страница {{ articles.number }} из {{ articles.paginator.num_pages }}.
+              </span>
+              {% if articles.has_next %}
+                <a href="?page={{ articles.next_page_number }}">следующая &rarr;</a>
+                <a href="?page={{ articles.paginator.num_pages }}">последняя &raquo;</a>
+              {% endif %}
+          </span>
+        </div>
+    </div>
+<!------------------------------------------------------------------------------------------------------------------->
+      {% if user.is_superuser %}
+      <div class="site-section bg-light">
+        <div class="container">
+          <div class="row mb-5">
+            <div class="col-12">
+              <h3>Добавить новую статью</h3>
+            </div>
+          </div>
+          <div class="row align-items-stretch retro-layout">
+            <a href="{%url 'articles:article_add' %}" class="btn btn-primary">Добавить новую статью</a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+<!------------------------------------------------------------------------------------------------------------------->
+  </div>
+{% endblock %}

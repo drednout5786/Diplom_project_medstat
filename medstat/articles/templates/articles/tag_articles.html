@@ -1,0 +1,66 @@
+{% extends "articles/base.html" %}
+{% load cache %}
+
+{% block title %} Medstat {% endblock %}
+
+{% block content %}
+    <div class="py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <span>Раздел: Все тэги</span>
+            <h3>Статьи по тэгу: {{tag.tag_name}}</h3>
+            <p>Всего найдено {{articles_count}} статей. Все статьи по выбранному тэгу собраны здесь!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+<!------------------------------------------------------------------------------------------------------------------->
+    <div class="site-section bg-white">
+      <div class="container">
+        <div class="row">
+            {% for article in articles_all.all%}
+              <div class="col-lg-4 mb-4">
+                <div class="entry2">
+                  <a href="{% url 'articles:article' id=article.id %}">
+                    <img src="{{article.article_img.url}}" alt="Image" class="img-fluid rounded"></a>
+                  <div class="excerpt">
+                    <h2><a href="{% url 'articles:article' id=article.id %}">{{article.article_name}}</a></h2>
+                    <div class="post-meta align-items-center text-left clearfix">
+                      <span>&nbsp;-&nbsp; {{article.article_date|date:"d.m.Y в H:i"}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+                <p>Статей по данному тэгу не найдено.</p>
+            {% endfor %}
+<!------------------------------------------------------------------------------------------------------------------->
+            <div class="sidebar-box">
+                <h3 class="heading">Все тэги:</h3>
+                <ul class="tags">
+                    {% cache 500 cache_tags_all %}
+                    {% for tag_ in tags_all.all%}
+                        <li><a href="{% url 'articles:tag_articles' id=tag_.id %}">{{tag_.tag_name}} ({{tag_.art_number}})</a></li>
+                    {% empty %}
+                        <li>Тэгов не найдено.</li>
+                    {% endfor %}
+                    {% endcache %}
+                </ul>
+            </div>
+            <div class="pt-5">
+                <h4>Заказать услугу можно здесь:</h4>
+                <a href="{% url 'articles:request_service' %}"><span class="post-category text-white bg-success mb-3">Заказать статобработку</span></a>
+                <a href="{% url 'articles:request_consultation' %}"><span class="post-category text-white bg-success mb-3">Заказать консультацию</span></a>
+                <a href="{% url 'articles:request_review' %}"><span class="post-category text-white bg-success mb-3">Заказать рецензию</span></a>
+                {% if user.is_authenticated %}
+                  <a href="{% url 'users:subscribe' pk=user.pk %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+                {% else %}
+                  <a href="{% url 'users:register' %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+                {% endif %}
+            </div>
+<!------------------------------------------------------------------------------------------------------------------->
+        </div>
+      </div>
+    </div>
+{% endblock %}

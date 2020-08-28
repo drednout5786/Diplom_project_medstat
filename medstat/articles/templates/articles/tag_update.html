@@ -1,0 +1,29 @@
+{% extends "articles/base.html" %}
+
+{% block title %}Tag update{% endblock %}
+
+{% block content %}
+
+    <div class="py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+              <span>Раздел: Работа с тэгами</span>
+              <h3>Коррекция тэга</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section bg-white">
+      <div class="container">
+        <div class="row align-items-stretch retro-layout-2">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+      </div>
+    </div>
+{% endblock %}

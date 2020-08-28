@@ -1,0 +1,25 @@
+{% extends "articles/base.html" %}
+
+{% block content %}
+    <div class="site-section bg-light">
+      <div class="container">
+          <div class="row">
+          <div class="col-md-12">
+              <span>Раздел: Подписка</span>
+              <h3>Подписка на новости сайта</h3>
+              {% if user.is_subscribed %}
+              <p>Подписка успешно завершена. Теперь Вы будете в курсе всех публикаций на сайте.</p>
+              {% else %}
+              <p>Отписка от новостей сайта успешно завершена. Но мы будем рады видеть Вас на страницах сайта.</p>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="site-section bg-white">
+      <div class="container">
+        <div class="row align-items-stretch retro-layout-2">
+        </div>
+      </div>
+    </div>
+{% endblock %}

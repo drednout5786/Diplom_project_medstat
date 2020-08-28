@@ -1,0 +1,46 @@
+{% extends "articles/base.html" %}
+
+{% block content %}
+    <div class="site-section bg-light">
+      <div class="container">
+          <div class="row">
+          <div class="col-md-6">
+            <span>Раздел: Сервис</span>
+            <h3>Задать вопрос</h3>
+            <p>Опишите кратко суть Вашего вопроса и мы Вам ответим.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+<!------------------------------------------------------------------------------------------------------------------->
+    <div class="site-section bg-white">
+      <div class="container">
+        <div class="col-md-12 col-lg-10">
+            <p>Вы вошли как {{ user.username }}.</p>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                <p>{{field.label_tag}}</p>
+                <hr>
+                {% for error in field.errors %}
+                    {{error}}
+                {% endfor %}
+                <p>{{field}}</p>
+                {% endfor %}
+                <button type="submit" class="btn btn btn-success">Задать вопрос</button>
+            </form>
+            <div class="pt-5">
+                <p>Если Вы хотите заказать статобработку, консультацию или рецензию, то Вы можете это сделать здесь:</p>
+                <a href="{% url 'articles:request_service' %}"><span class="post-category text-white bg-success mb-3">Заказать статобработку</span></a>
+                <a href="{% url 'articles:request_consultation' %}"><span class="post-category text-white bg-success mb-3">Заказать консультацию</span></a>
+                <a href="{% url 'articles:request_review' %}"><span class="post-category text-white bg-success mb-3">Заказать рецензию</span></a>
+                {% if user.is_authenticated %}
+                  <a href="{% url 'users:subscribe' pk=user.pk %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+                {% else %}
+                  <a href="{% url 'users:register' %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+                {% endif %}
+            </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

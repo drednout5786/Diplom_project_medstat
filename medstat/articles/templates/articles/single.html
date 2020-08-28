@@ -1,0 +1,148 @@
+{% extends "articles/base.html" %}
+{% load cache %}
+
+{% block title %}{{article.article_name}}{% endblock %}
+{% block content %}
+
+<div class="site-cover site-cover-sm same-height overlay single-page" style="background: url({{ article.article_img.url }} ) no-repeat; background-position: center center; background-size: contain;">
+<!--    https://html5book.ru/css-background/-->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="post-entry text-center">
+<!--                    <span class="post-category text-white bg-success mb-3">{{tags}}</span>-->
+                    {% for tag in tags_article_all.all %}
+                    <a href="{% url 'articles:tag_articles' id=tag.id %}"><span class="post-category text-white bg-primary mb-3">{{tag.tag_name}}</span></a>
+                    {% empty %}
+                    <p>Список тэгов у данной статьи пуст.</p>
+                    {% endfor %}
+                    <h2 class="mb-4"><a href="{% url 'articles:article' id=article.id %}">{{article}}</a></h2>
+                        <div class="post-meta align-items-center text-center">
+                            <span>&nbsp;-&nbsp; {{article.article_date|date:"d.m.Y в H:i"}} &nbsp;-&nbsp;</span>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------------------------------------------------------------------------------------------------->
+    <section class="site-section py-lg">
+      <div class="container">
+        <div class="row blog-entries element-animate">
+          <div class="col-md-12 col-lg-8 main-content">
+            <div class="post-content-body">
+                {{article.article_text|linebreaksbr}}
+            </div>
+            <div class="pt-5">
+                <br>
+                <h4>Задать вопрос по статье можно здесь:</h4>
+                <a href="{% url 'articles:request_question' %}"><span class="post-category text-white bg-success mb-3">Задать вопрос</span></a>
+                <h4>Заказать услугу можно здесь:</h4>
+                <a href="{% url 'articles:request_service' %}"><span class="post-category text-white bg-success mb-3">Заказать статобработку</span></a>
+                <a href="{% url 'articles:request_consultation' %}"><span class="post-category text-white bg-success mb-3">Заказать консультацию</span></a>
+                <a href="{% url 'articles:request_review' %}"><span class="post-category text-white bg-success mb-3">Заказать рецензию</span></a>
+                {% if user.is_authenticated %}
+                  <a href="{% url 'users:subscribe' pk=user.pk %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+                {% else %}
+                  <a href="{% url 'users:register' %}"><span class="post-category text-white bg-success mb-3">Подписка на новости</a>
+                {% endif %}
+            </div>
+          </div>
+<!------------------------------------------------------------------------------------------------------------------->
+            <!-- START sidebar -->
+            <div class="col-md-12 col-lg-4 sidebar">
+                <div class="sidebar-box">
+                  <h3 class="heading">Все тэги:</h3>
+                  <ul class="tags">
+                      {% cache 500 cache_tags_all %}
+<!--                      {% with tags_all=article.get_all_tags %}-->
+                      {% for tag_ in tags_all %}
+                      <li><a href="{% url 'articles:tag_articles' id=tag_.id %}">{{tag_}} ({{tag_.art_number}})</a></li>
+                      {% endfor %}
+<!--                      {% endwith %}-->
+                      {% endcache %}
+                  </ul>
+                </div>
+          </div>
+          <!-- END sidebar -->
+<!------------------------------------------------------------------------------------------------------------------->
+        </div>
+      </div>
+    </section>
+<!------------------------------------------------------------------------------------------------------------------->
+    {% if user.is_superuser %}
+    <div class="site-section bg-light">
+      <div class="container">
+          <div class="row mb-5">
+              <div class="col-12">
+                  <h2>Редактирование статьи:</h2>
+              </div>
+          </div>
+          <div class="row align-items-stretch retro-layout-2">
+            <div class="text-center">
+                <h5>{{article.article_name}}</h5><p></p>
+                 <div class="container">
+                     <div class="text-center"><a href = "{%url 'articles:article_update' pk=article.pk %}" class="btn btn-warning">Изменить</a></div><p></p>
+                     <div class="text-center"><a href = "{%url 'articles:article_delete' pk=article.pk %}" class="btn btn-danger">Удалить</a></div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+<!------------------------------------------------------------------------------------------------------------------->
+    <div class="site-section bg-lightx">
+      <div class="container">
+          <div class="text"></div>
+      </div>
+    </div>
+    {% endif %}
+<!------------------------------------------------------------------------------------------------------------------->
+<div class="site-section bg-light">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-12">
+            <h2>Вам может понравиться</h2>
+          </div>
+        </div>
+        <div class="row align-items-stretch retro-layout">
+            <div class="col-md-5 order-md-2">
+                <a href="{% url 'articles:article' id=article_11.id %}" class="hentry img-1 h-100 gradient" style="background: url({{ article_11.article_img.url }} ) no-repeat; background-size: contain;">
+                  <span class="post-category text-white bg-danger">Рецензия статистика</span>
+                  <div class="text">
+                    <h2>{{article_11.article_name}}</h2>
+                    <span>{{article_11.article_date}}</span>
+                  </div>
+                </a>
+            </div>
+
+          <div class="col-md-7">
+            <a href="{% url 'articles:article' id=article_12.id %}" class="hentry img-2 v-height mb30 gradient" style="background: url({{ article_12.article_img.url }} ) no-repeat; background-position: center center; background-size: cover;">
+              <span class="post-category text-white bg-success">Искусственный интеллект в медицине</span>
+              <div class="text text-sm">
+                <h2>{{article_12.article_name}}</h2>
+                <span>{{article_11.article_date}}</span>
+              </div>
+            </a>
+
+            <div class="two-col d-block d-md-flex">
+              <a href="{% url 'articles:article' id=article_13.id %}" class="hentry v-height img-2 gradient" style="background: url({{ article_13.article_img.url }} ) no-repeat; background-size: contain;">
+                <span class="post-category text-white bg-primary">Доказательная медицина</span>
+                <div class="text text-sm">
+                  <h2>{{article_13.article_name}}</h2>
+                  <span>{{article_13.article_date}}</span>
+                </div>
+              </a>
+              <a href="{% url 'articles:article' id=article_14.id %}" class="hentry v-height img-2 ml-auto gradient" style="background: url({{ article_14.article_img.url }} ) no-repeat; background-size: contain;">
+                <span class="post-category text-white bg-warning">Визуализация</span>
+                <div class="text text-sm">
+                  <h2>{{article_14.article_name}}</h2>
+                  <span>{{article_14.article_date}}</span>
+                </div>
+              </a>
+            </div>
+        </div>
+
+      </div>
+      </div>
+</div>
+{% endblock %}
