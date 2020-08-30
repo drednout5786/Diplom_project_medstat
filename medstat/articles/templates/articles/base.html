@@ -162,9 +162,9 @@
               ВАКовский журнал по медицине, в части статистических расчетов и правильного оформления проведенных исследований.</p>
           </div>
           <div class="col-md-3 ml-auto">
-            <!-- <h3 class="footer-heading mb-4">Navigation</h3> -->
+            <h3 class="footer-heading mb-4">Навигация:</h3>
             <ul class="list-unstyled float-left mr-5">
-              <li><a href="{% url 'articles:service' %}">Услуги</a></li>
+              <li><a href="{% url 'articles:service' %}">Все услуги</a></li>
               <li><a href="{% url 'articles:request_service' %}">Заказать статобработку</a></li>
               {% if user.is_authenticated %}
               <li><a href="{% url 'users:subscribe' pk=user.pk %}">Подписка на новости</a></li>
@@ -174,14 +174,15 @@
               <li><a href="#">Отзывы</a></li>
               <li><a href="#">Карта сайта</a></li>
 
+            <h3 class="footer-heading mb-4">Работа с API:</h3>
               {% if user.is_authenticated %}
               <li><a href="/api/v0/">API</a></li>
+              <li><a href="{% url 'users:get_api_token' %}">Получить токен для API</a></li>
               {% else %}
               <li><a href="{% url 'users:login' %}">API</a></li>
               {% endif %}
-            </ul>
+
             <h3 class="footer-heading mb-4">Основные темы:</h3>
-            <ul class="list-unstyled float-left">
               <li><a href="{% url 'articles:tag_articles' id=1 %}">Доказательная медицина</a></li>
               <li><a href="{% url 'articles:tag_articles' id=2 %}">Рецензия статистика</a></li>
               <li><a href="{% url 'articles:tag_articles' id=7 %}">Методы</a></li>

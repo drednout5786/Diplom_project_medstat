@@ -19,6 +19,8 @@ from django.views.generic import UpdateView
 from .forms import RegistrationUserForm
 from .models import ArticlesUser
 from .tokens import account_activation_token
+from rest_framework.authtoken.models import Token
+
 
 # Create your views here.
 
@@ -116,3 +118,50 @@ def activate(request, uidb64, token):
 # https://code.tutsplus.com/ru/tutorials/using-celery-with-django-for-background-task-processing--cms-28732
 def success_verification(request):
     return render(request, 'users/success_verification.html')
+
+
+def get_api_token(request):
+    if request.method == 'GET':
+        return render(request, 'users/get_api_token.html')
+    else:
+        token = Token.objects.get_or_create(user=request.user)
+        msg1 = 'Получение токена для работы с API'
+        msg2 = 'Получение токена'
+        msg3 = 'Токен предоставлен'
+        return render(request, 'users/update_api_token.html', {'user': request.user, 'token': token[0], 'msg1': msg1, 'msg2': msg2, 'msg3': msg3})
+
+def update_api_token(request):
+    if request.method == 'GET':
+        return render(request, 'users/update_api_token.html', {'user': request.user, 'token': '???'})
+    else:
+        token = Token.objects.filter(user=request.user)
+        new_key = token[0].generate_key()
+        token.update(key=new_key)
+        msg1 = 'Обновление токена для работы с API'
+        msg2 = 'Обновление токена'
+        msg3 = 'Ваш токен обновлен'
+        return render(request, 'users/update_api_token.html', {'user': request.user, 'token': token[0], 'msg1': msg1, 'msg2': msg2, 'msg3': msg3})
+
+
+# from rest_framework.authtoken.views import ObtainAuthToken
+# from rest_framework.response import Response
+
+# class CustomObtainAuthToken(ObtainAuthToken):
+#     def post(self, request, *args, **kwargs):
+#         response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+#         token = Token.objects.get(key=response.data['token'])
+#         return Response({'token': token.key, 'id': token.user_id})
+#
+# class CustomAuthToken(ObtainAuthToken):
+#
+#     def post(self, request, *args, **kwargs):
+#         serializer = self.serializer_class(data=request.data,
+#                                            context={'request': request})
+#         serializer.is_valid(raise_exception=True)
+#         user = serializer.validated_data['user']
+#         token, created = Token.objects.get_or_create(user=user)
+#         return Response({
+#             'token': token.key,
+#             'user_id': user.pk,
+#             'email': user.email
+#         })

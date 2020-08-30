@@ -1,0 +1,31 @@
+{% extends "articles/base.html" %}
+
+{% block content %}
+    <div class="site-section bg-light">
+      <div class="container">
+          <div class="row">
+          <div class="col-md-12">
+            <span>Раздел: {{msg1}}</span>
+            <h3>{{msg2}}</h3>
+            <p>{{msg3}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="site-section bg-white">
+      <div class="container">
+        <div class="col-md-12">
+            <p>Ваше имя: {{user.username}} </p>
+            <p>Ваш e-mail: {{user.email}} </p>
+            <p>Ваш токен: {{token}}</p>
+            </br>
+            </br>
+            </br>
+            <form action="/users/update_api_token/" method="post">
+                {% csrf_token %}
+                <button type="submit">Обновить токен</button>
+            </form>
+        </div>
+      </div>
+    </div>
+{% endblock content %}

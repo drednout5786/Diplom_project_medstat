@@ -1,0 +1,25 @@
+{% extends "articles/base.html" %}
+
+{% block content %}
+    <div class="site-section bg-light">
+      <div class="container">
+          <div class="row">
+          <div class="col-md-12">
+            <span>Раздел: Получение токена для работы с API</span>
+            <h3>Получение токена</h3>
+            <p>Для получения токена нажмите кнопку "Получить токен"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="site-section bg-white">
+      <div class="container">
+        <div class="row align-items-stretch retro-layout-2">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit">Получить токен</button>
+            </form>
+        </div>
+      </div>
+    </div>
+{% endblock content %}

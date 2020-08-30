@@ -6,6 +6,10 @@ from datetime import datetime
 from django.db.models import signals
 from django.urls import reverse
 
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.response import Response
+from django.conf import settings
 
 # Create your models here.
 
@@ -42,3 +46,12 @@ def create_info(sender, instance, **kwargs):
 # https://github.com/itsvinayak/user_login_and_register/blob/master/user/views.py
 # https://github.com/rasca/django-verify-email/blob/master/verify_email/views.py
 # https://stackoverflow.com/questions/55578387/email-verification-in-django
+
+# https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication
+# Генерация токенов используя сигналы
+# Если надо, чтобы у каждого пользователя был автоматически сгенерированный токен, можно поймать post_save сигнал пользователя.
+@receiver(post_save, sender=ArticlesUser)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
+
